@@ -1,0 +1,399 @@
+import "2_Simulation.cif";
+svgfile "4_Basic_Model.svg";
+
+svgout id "mode_operational_1" attr "visibility"
+     value if tube_1.mode.operational and tube_1.standby.off: "visible" else "hidden" end;
+svgout id "mode_emergency_1" attr "visibility"
+     value if tube_1.mode.emergency and tube_1.evacuation.off: "visible" else "hidden" end;
+svgout id "mode_standby_1" attr "visibility"
+     value if tube_1.standby.on: "visible" else "hidden" end;
+svgout id "mode_evacuation_1" attr "visibility"
+     value if tube_1.evacuation.on: "visible" else "hidden" end;
+svgout id "mode_recovery_1" attr "visibility"
+     value if tube_1.mode.recovery: "visible" else "hidden" end;
+svgout id "mode_support_1" attr "visibility"
+     value if tube_1.mode.support: "visible" else "hidden" end;
+
+svgout id "mode_operational_2" attr "visibility"
+     value if tube_2.mode.operational and tube_2.standby.off: "visible" else "hidden" end;
+svgout id "mode_emergency_2" attr "visibility"
+     value if tube_2.mode.emergency and tube_2.evacuation.off: "visible" else "hidden" end;
+svgout id "mode_standby_2" attr "visibility"
+     value if tube_2.standby.on: "visible" else "hidden" end;
+svgout id "mode_evacuation_2" attr "visibility"
+     value if tube_2.evacuation.on: "visible" else "hidden" end;
+svgout id "mode_recovery_2" attr "visibility"
+     value if tube_2.mode.recovery: "visible" else "hidden" end;
+svgout id "mode_support_2" attr "visibility"
+     value if tube_2.mode.support: "visible" else "hidden" end;
+
+svgin id "button_operational_1" event tube_1.button_operational.button.u_press;
+svgin id "button_evacuation_1" event tube_1.button_evacuation.button.u_press;
+svgin id "button_recovery_1" event tube_1.button_recovery.button.u_press;
+
+svgin id "button_operational_2" event tube_2.button_operational.button.u_press;
+svgin id "button_evacuation_2" event tube_2.button_evacuation.button.u_press;
+svgin id "button_recovery_2" event tube_2.button_recovery.button.u_press;
+
+svgin id "button_obstacle_1" event if hybrid_tube_1.hybrid_obstacle.no_obstacle: hybrid_tube_1.hybrid_obstacle.u_place_obstacle else hybrid_tube_1.hybrid_obstacle.u_remove_obstacle end;
+svgin id "button_obstacle_2" event if hybrid_tube_2.hybrid_obstacle.no_obstacle: hybrid_tube_2.hybrid_obstacle.u_place_obstacle else hybrid_tube_2.hybrid_obstacle.u_remove_obstacle end;
+
+svgout id "obstacle1" attr "visibility"
+     value if hybrid_tube_1.hybrid_obstacle.obstacle: "visible" else "hidden" end;
+svgout id "obstacle2" attr "visibility"
+     value if hybrid_tube_2.hybrid_obstacle.obstacle: "visible" else "hidden" end;
+
+svgout id "bb_1_normal_2" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_1.height < 250: "visible" else "hidden" end;
+svgout id "bb_1_normal_3" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_1.height < 200: "visible" else "hidden" end;
+svgout id "bb_1_normal_4" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_1.height < 150: "visible" else "hidden" end;
+svgout id "bb_1_normal_5" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_1.height < 100: "visible" else "hidden" end;
+svgout id "bb_1_normal_6" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_1.height < 50: "visible" else "hidden" end;
+
+svgout id "bb_1_emergency_2" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_2.height < 240: "visible" else "hidden" end;
+svgout id "bb_1_emergency_3" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_2.height < 180: "visible" else "hidden" end;
+svgout id "bb_1_emergency_4" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_2.height < 120: "visible" else "hidden" end;
+svgout id "bb_1_emergency_5" attr "visibility"
+     value if hybrid_tube_1.hybrid_boom_barrier_2.height < 50: "visible" else "hidden" end;
+
+svgout id "bb_2_normal_2" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_1.height < 250: "visible" else "hidden" end;
+svgout id "bb_2_normal_3" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_1.height < 200: "visible" else "hidden" end;
+svgout id "bb_2_normal_4" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_1.height < 150: "visible" else "hidden" end;
+svgout id "bb_2_normal_5" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_1.height < 100: "visible" else "hidden" end;
+svgout id "bb_2_normal_6" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_1.height < 50: "visible" else "hidden" end;
+
+svgout id "bb_2_emergency_2" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_2.height < 240: "visible" else "hidden" end;
+svgout id "bb_2_emergency_3" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_2.height < 180: "visible" else "hidden" end;
+svgout id "bb_2_emergency_4" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_2.height < 120: "visible" else "hidden" end;
+svgout id "bb_2_emergency_5" attr "visibility"
+     value if hybrid_tube_2.hybrid_boom_barrier_2.height < 50: "visible" else "hidden" end;
+
+svgout id "red_1_1" attr "fill"
+     value if tube_1.traffic_light_1.mode.red: "red" else "grey" end;
+svgout id "yellow_1_1" attr "fill"
+     value if tube_1.traffic_light_1.mode.yellow or (tube_1.traffic_light_1.mode.flashing and hybrid_tube_1.hybrid_traffic_light_1.timer_flash.on): "yellow" else "grey" end;
+svgout id "red_1_2" attr "fill"
+     value if tube_1.traffic_light_2.mode.red: "red" else "grey" end;
+svgout id "yellow_1_2" attr "fill"
+     value if tube_1.traffic_light_2.mode.yellow or (tube_1.traffic_light_2.mode.flashing and hybrid_tube_1.hybrid_traffic_light_2.timer_flash.on): "yellow" else "grey" end;
+svgout id "red_1_3" attr "fill"
+     value if tube_1.traffic_light_3.mode.red: "red" else "grey" end;
+svgout id "yellow_1_3" attr "fill"
+     value if tube_1.traffic_light_3.mode.yellow or (tube_1.traffic_light_3.mode.flashing and hybrid_tube_1.hybrid_traffic_light_3.timer_flash.on): "yellow" else "grey" end;
+
+svgout id "release_signal_1" attr "fill"
+     value if tube_1.traffic_light_1.release_signal.on and tube_1.traffic_light_2.release_signal.on and tube_1.traffic_light_3.release_signal.on: "yellow" else "grey" end;
+svgout id "light_request_1" attr "fill"
+     value if tube_1.mode.emergency or tube_1.mode.recovery: "red" else "grey" end;
+svgout id "time_light_1" text
+      value fmt ("Traffic light Time: %.2f s", hybrid_tube_1.hybrid_traffic_light_1.timer_traffic_light.t);
+svgout id "time_MTM_1" text
+      value fmt ("Matrix sign Time: %.2f s", hybrid_tube_1.hybrid_j32.timer.t);
+
+svgout id "red_2_1" attr "fill"
+     value if tube_2.traffic_light_1.mode.red: "red" else "grey" end;
+svgout id "yellow_2_1" attr "fill"
+     value if tube_2.traffic_light_1.mode.yellow or (tube_2.traffic_light_1.mode.flashing and hybrid_tube_2.hybrid_traffic_light_1.timer_flash.on): "yellow" else "grey" end;
+svgout id "red_2_2" attr "fill"
+     value if tube_2.traffic_light_2.mode.red: "red" else "grey" end;
+svgout id "yellow_2_2" attr "fill"
+     value if tube_2.traffic_light_2.mode.yellow or (tube_2.traffic_light_2.mode.flashing and hybrid_tube_2.hybrid_traffic_light_2.timer_flash.on): "yellow" else "grey" end;
+svgout id "red_2_3" attr "fill"
+     value if tube_2.traffic_light_3.mode.red: "red" else "grey" end;
+svgout id "yellow_2_3" attr "fill"
+     value if tube_2.traffic_light_3.mode.yellow or (tube_2.traffic_light_3.mode.flashing and hybrid_tube_2.hybrid_traffic_light_3.timer_flash.on): "yellow" else "grey" end;
+
+svgout id "release_signal_2" attr "fill"
+     value if tube_2.traffic_light_1.release_signal.on and tube_2.traffic_light_2.release_signal.on and tube_2.traffic_light_3.release_signal.on: "yellow" else "grey" end;
+svgout id "light_request_2" attr "fill"
+     value if tube_2.mode.emergency or tube_2.mode.recovery: "red" else "grey" end;
+svgout id "time_light_2" text
+      value fmt ("Traffic light Time: %.2f s", hybrid_tube_2.hybrid_traffic_light_1.timer_traffic_light.t);
+svgout id "time_MTM_2" text
+      value fmt ("Matrix sign Time: %.2f s", hybrid_tube_2.hybrid_j32.timer.t);
+
+svgout id "j32_sign1" attr "fill"
+     value if tube_1.j32.mode.on: "white" else "grey" end;
+svgout id "j32_sign2" attr "fill"
+     value if tube_2.j32.mode.on: "white" else "grey" end;
+
+svgout id "MTM_free_1" attr "visibility"
+     value if tube_1.matrix_sign_free.on: "visible" else "hidden" end;
+svgout id "MTM_traffic_light_1" attr "visibility"
+     value if tube_1.matrix_sign_traffic_light.on: "visible" else "hidden" end;
+svgout id "MTM_free_2" attr "visibility"
+     value if tube_2.matrix_sign_free.on: "visible" else "hidden" end;
+svgout id "MTM_traffic_light_2" attr "visibility"
+     value if tube_2.matrix_sign_traffic_light.on: "visible" else "hidden" end;
+
+svgin id "lid_1_A" event tube_1.emergency_cabinet_A.sensor_open.u_on;
+svgout id "lid_1_A" attr "visibility"
+     value if tube_1.emergency_cabinet_A.sensor_open.off: "visible" else "hidden" end;
+svgin id "lid_open_1_A" event tube_1.emergency_cabinet_A.sensor_open.u_off;
+svgout id "lid_open_1_A" attr "visibility"
+     value if tube_1.emergency_cabinet_A.sensor_open.on: "visible" else "hidden" end;
+
+svgin id "hand_extinguisher_1_A" event if tube_1.emergency_cabinet_A.hand_extinguisher.off: tube_1.emergency_cabinet_A.hand_extinguisher.u_on else tube_1.emergency_cabinet_A.hand_extinguisher.u_off end;
+svgout id "hand_extinguisher_1_A_bg" attr "fill" value if tube_1.emergency_cabinet_A.hand_extinguisher.on: "yellow" else "gray" end;
+svgin id "fire_hose_1_A" event if tube_1.emergency_cabinet_A.fire_hose.off: tube_1.emergency_cabinet_A.fire_hose.u_on else tube_1.emergency_cabinet_A.fire_hose.u_off end;
+svgout id "fire_hose_1_A_bg" attr "fill" value if tube_1.emergency_cabinet_A.fire_hose.on: "yellow" else "gray" end;
+svgin id "emergency_phone_1_A" event if tube_1.emergency_cabinet_A.emergency_phone.off: tube_1.emergency_cabinet_A.emergency_phone.u_on else tube_1.emergency_cabinet_A.emergency_phone.u_off end;
+svgout id "emergency_phone_1_A_bg" attr "fill" value if tube_1.emergency_cabinet_A.emergency_phone.on: "yellow" else "gray" end;
+
+svgin id "lid_1_C" event tube_1.emergency_cabinet_C.sensor_open.u_on;
+svgout id "lid_1_C" attr "visibility"
+     value if tube_1.emergency_cabinet_C.sensor_open.off: "visible" else "hidden" end;
+svgin id "lid_open_1_C" event tube_1.emergency_cabinet_C.sensor_open.u_off;
+svgout id "lid_open_1_C" attr "visibility"
+     value if tube_1.emergency_cabinet_C.sensor_open.on: "visible" else "hidden" end;
+
+svgin id "hand_extinguisher_1_C" event if tube_1.emergency_cabinet_C.hand_extinguisher.off: tube_1.emergency_cabinet_C.hand_extinguisher.u_on else tube_1.emergency_cabinet_C.hand_extinguisher.u_off end;
+svgout id "hand_extinguisher_1_C_bg" attr "fill" value if tube_1.emergency_cabinet_C.hand_extinguisher.on: "yellow" else "gray" end;
+svgin id "emergency_phone_1_C" event if tube_1.emergency_cabinet_C.emergency_phone.off: tube_1.emergency_cabinet_C.emergency_phone.u_on else tube_1.emergency_cabinet_C.emergency_phone.u_off end;
+svgout id "emergency_phone_1_C_bg" attr "fill" value if tube_1.emergency_cabinet_C.emergency_phone.on: "yellow" else "gray" end;
+
+svgin id "lid_2_A" event tube_2.emergency_cabinet_A.sensor_open.u_on;
+svgout id "lid_2_A" attr "visibility"
+     value if tube_2.emergency_cabinet_A.sensor_open.off: "visible" else "hidden" end;
+svgin id "lid_open_2_A" event tube_2.emergency_cabinet_A.sensor_open.u_off;
+svgout id "lid_open_2_A" attr "visibility"
+     value if tube_2.emergency_cabinet_A.sensor_open.on: "visible" else "hidden" end;
+
+svgin id "hand_extinguisher_2_A" event if tube_2.emergency_cabinet_A.hand_extinguisher.off: tube_2.emergency_cabinet_A.hand_extinguisher.u_on else tube_2.emergency_cabinet_A.hand_extinguisher.u_off end;
+svgout id "hand_extinguisher_2_A_bg" attr "fill" value if tube_2.emergency_cabinet_A.hand_extinguisher.on: "yellow" else "gray" end;
+svgin id "fire_hose_2_A" event if tube_2.emergency_cabinet_A.fire_hose.off: tube_2.emergency_cabinet_A.fire_hose.u_on else tube_2.emergency_cabinet_A.fire_hose.u_off end;
+svgout id "fire_hose_2_A_bg" attr "fill" value if tube_2.emergency_cabinet_A.fire_hose.on: "yellow" else "gray" end;
+svgin id "emergency_phone_2_A" event if tube_2.emergency_cabinet_A.emergency_phone.off: tube_2.emergency_cabinet_A.emergency_phone.u_on else tube_2.emergency_cabinet_A.emergency_phone.u_off end;
+svgout id "emergency_phone_2_A_bg" attr "fill" value if tube_2.emergency_cabinet_A.emergency_phone.on: "yellow" else "gray" end;
+
+svgin id "lid_2_C" event tube_2.emergency_cabinet_C.sensor_open.u_on;
+svgout id "lid_2_C" attr "visibility"
+     value if tube_2.emergency_cabinet_C.sensor_open.off: "visible" else "hidden" end;
+svgin id "lid_open_2_C" event tube_2.emergency_cabinet_C.sensor_open.u_off;
+svgout id "lid_open_2_C" attr "visibility"
+     value if tube_2.emergency_cabinet_C.sensor_open.on: "visible" else "hidden" end;
+
+svgin id "hand_extinguisher_2_C" event if tube_2.emergency_cabinet_C.hand_extinguisher.off: tube_2.emergency_cabinet_C.hand_extinguisher.u_on else tube_2.emergency_cabinet_C.hand_extinguisher.u_off end;
+svgout id "hand_extinguisher_2_C_bg" attr "fill" value if tube_2.emergency_cabinet_C.hand_extinguisher.on: "yellow" else "gray" end;
+svgin id "emergency_phone_2_C" event if tube_2.emergency_cabinet_C.emergency_phone.off: tube_2.emergency_cabinet_C.emergency_phone.u_on else tube_2.emergency_cabinet_C.emergency_phone.u_off end;
+svgout id "emergency_phone_2_C_bg" attr "fill" value if tube_2.emergency_cabinet_C.emergency_phone.on: "yellow" else "gray" end;
+
+svgin id "add_smoke_1" event hybrid_tube_1.smoke.button_add.button.u_press;
+svgin id "remove_smoke_1" event hybrid_tube_1.smoke.button_remove.button.u_press;
+svgout id "smoke_level_1" text value fmt ("%d", hybrid_tube_1.smoke.smoke_level.level);
+
+svgin id "add_smoke_2" event hybrid_tube_2.smoke.button_add.button.u_press;
+svgin id "remove_smoke_2" event hybrid_tube_2.smoke.button_remove.button.u_press;
+svgout id "smoke_level_2" text value fmt ("%d", hybrid_tube_2.smoke.smoke_level.level);
+
+svgout id "smoke_1_1" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>0: "visible" else "hidden" end;
+svgout id "smoke_1_2" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>1: "visible" else "hidden" end;
+svgout id "smoke_1_3" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>2: "visible" else "hidden" end;
+svgout id "smoke_1_4" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>3: "visible" else "hidden" end;
+svgout id "smoke_1_5" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>4: "visible" else "hidden" end;
+svgout id "smoke_1_6" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>5: "visible" else "hidden" end;
+svgout id "smoke_1_7" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>6: "visible" else "hidden" end;
+svgout id "smoke_1_8" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>7: "visible" else "hidden" end;
+svgout id "smoke_1_9" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>8: "visible" else "hidden" end;
+svgout id "smoke_1_10" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>9: "visible" else "hidden" end;
+svgout id "smoke_1_11" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>10: "visible" else "hidden" end;
+svgout id "smoke_1_12" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>11: "visible" else "hidden" end;
+svgout id "smoke_1_13" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>12: "visible" else "hidden" end;
+svgout id "smoke_1_14" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>13: "visible" else "hidden" end;
+svgout id "smoke_1_15" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>14: "visible" else "hidden" end;
+svgout id "smoke_1_16" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>15: "visible" else "hidden" end;
+svgout id "smoke_1_17" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>16: "visible" else "hidden" end;
+svgout id "smoke_1_18" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>17: "visible" else "hidden" end;
+svgout id "smoke_1_19" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>18: "visible" else "hidden" end;
+svgout id "smoke_1_20" attr "visibility"
+     value if hybrid_tube_1.smoke.smoke_level.level>19: "visible" else "hidden" end;
+svgout id "smoke_2_1" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>0: "visible" else "hidden" end;
+svgout id "smoke_2_2" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>1: "visible" else "hidden" end;
+svgout id "smoke_2_3" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>2: "visible" else "hidden" end;
+svgout id "smoke_2_4" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>3: "visible" else "hidden" end;
+svgout id "smoke_2_5" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>4: "visible" else "hidden" end;
+svgout id "smoke_2_6" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>5: "visible" else "hidden" end;
+svgout id "smoke_2_7" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>6: "visible" else "hidden" end;
+svgout id "smoke_2_8" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>7: "visible" else "hidden" end;
+svgout id "smoke_2_9" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>8: "visible" else "hidden" end;
+svgout id "smoke_2_10" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>9: "visible" else "hidden" end;
+svgout id "smoke_2_11" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>10: "visible" else "hidden" end;
+svgout id "smoke_2_12" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>11: "visible" else "hidden" end;
+svgout id "smoke_2_13" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>12: "visible" else "hidden" end;
+svgout id "smoke_2_14" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>13: "visible" else "hidden" end;
+svgout id "smoke_2_15" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>14: "visible" else "hidden" end;
+svgout id "smoke_2_16" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>15: "visible" else "hidden" end;
+svgout id "smoke_2_17" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>16: "visible" else "hidden" end;
+svgout id "smoke_2_18" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>17: "visible" else "hidden" end;
+svgout id "smoke_2_19" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>18: "visible" else "hidden" end;
+svgout id "smoke_2_20" attr "visibility"
+     value if hybrid_tube_2.smoke.smoke_level.level>19: "visible" else "hidden" end;
+
+svgin id "button_SOS_1" event if tube_1.SOS.off: tube_1.SOS.u_on else tube_1.SOS.u_off end;
+svgout id "SOS_1_bg" attr "fill"
+     value if tube_1.SOS.on: "yellow" else "grey" end;
+svgin id "button_SOS_2" event if tube_2.SOS.off: tube_2.SOS.u_on else tube_2.SOS.u_off end;
+svgout id "SOS_2_bg" attr "fill"
+     value if tube_2.SOS.on: "yellow" else "grey" end;
+
+svgout id "ventilation_mode_1" text
+      value fmt ("Ventilation mode: %d", tube_1.ventilation_entrance.mode);
+svgout id "ventilation_mode_2" text
+      value fmt ("Ventilation mode: %d", tube_2.ventilation_entrance.mode);
+svgout id "ventilation_mode_1-1" text
+      value fmt ("Ventilation mode: %d", tube_1.ventilation.mode);
+svgout id "ventilation_mode_2-1" text
+      value fmt ("Ventilation mode: %d", tube_2.ventilation.mode);
+
+svgout id "ventilation_direction_along_1" attr "visibility"
+     value if tube_1.ventilation_direction.along and tube_1.ventilation_entrance.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_against_1" attr "visibility"
+     value if tube_1.ventilation_direction.against and tube_1.ventilation_entrance.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_along_2" attr "visibility"
+     value if tube_2.ventilation_direction.along and tube_2.ventilation_entrance.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_against_2" attr "visibility"
+     value if tube_2.ventilation_direction.against and tube_2.ventilation_entrance.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_along_1-1" attr "visibility"
+     value if tube_1.ventilation_direction.along and tube_1.ventilation.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_against_1-1" attr "visibility"
+     value if tube_1.ventilation_direction.against and tube_1.ventilation.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_along_2-1" attr "visibility"
+     value if tube_2.ventilation_direction.along and tube_2.ventilation.mode>0: "visible" else "hidden" end;
+svgout id "ventilation_direction_against_2-1" attr "visibility"
+     value if tube_2.ventilation_direction.against and tube_2.ventilation.mode>0: "visible" else "hidden" end;
+
+svgin id "add_light_1" event hybrid_tube_1.light.button_add.button.u_press;
+svgin id "remove_light_1" event hybrid_tube_1.light.button_remove.button.u_press;
+svgout id "light_level_1" text value fmt ("%d", hybrid_tube_1.light.light_level.level);
+
+svgin id "add_light_2" event hybrid_tube_2.light.button_add.button.u_press;
+svgin id "remove_light_2" event hybrid_tube_2.light.button_remove.button.u_press;
+svgout id "light_level_2" text value fmt ("%d", hybrid_tube_2.light.light_level.level);
+
+svgout id "lighting_mode_1" text
+      value fmt ("Lighting mode: %d", tube_1.lighting.mode);
+svgout id "lighting_mode_2" text
+      value fmt ("Lighting mode: %d", tube_2.lighting.mode);
+
+svgout id "camera_1_1" attr "visibility"
+     value if tube_1.channel.camera_1: "visible" else "hidden" end;
+svgout id "camera_1_2" attr "visibility"
+     value if tube_1.channel.camera_2: "visible" else "hidden" end;
+svgout id "camera_1_3" attr "visibility"
+     value if tube_1.channel.camera_3: "visible" else "hidden" end;
+svgout id "camera_1_4" attr "visibility"
+     value if tube_1.channel.camera_4: "visible" else "hidden" end;
+svgout id "camera_1_5" attr "visibility"
+     value if tube_1.channel.camera_5: "visible" else "hidden" end;
+svgout id "camera_1_6" attr "visibility"
+     value if tube_1.channel.camera_6: "visible" else "hidden" end;
+svgout id "camera_2_1" attr "visibility"
+     value if tube_2.channel.camera_1: "visible" else "hidden" end;
+svgout id "camera_2_2" attr "visibility"
+     value if tube_2.channel.camera_2: "visible" else "hidden" end;
+svgout id "camera_2_3" attr "visibility"
+     value if tube_2.channel.camera_3: "visible" else "hidden" end;
+svgout id "camera_2_4" attr "visibility"
+     value if tube_2.channel.camera_4: "visible" else "hidden" end;
+svgout id "camera_2_5" attr "visibility"
+     value if tube_2.channel.camera_5: "visible" else "hidden" end;
+svgout id "camera_2_6" attr "visibility"
+     value if tube_2.channel.camera_6: "visible" else "hidden" end;
+
+svgout id "recorder_1" attr "fill"
+     value if tube_1.recorder.on: "yellow" else "grey" end;
+svgout id "recorder_2" attr "fill"
+     value if tube_2.recorder.on: "yellow" else "grey" end;
+
+svgout id "sound_beacon_1" attr "visibility"
+     value if tube_1.escape_door.sound_beacon.on: "visible" else "hidden" end;
+svgout id "sound_beacon_2" attr "visibility"
+     value if tube_2.escape_door.sound_beacon.on: "visible" else "hidden" end;
+
+svgout id "contour_lighting_1" attr "visibility"
+     value if tube_1.escape_door.contour_lighting.on: "visible" else "hidden" end;
+svgout id "contour_lighting_2" attr "visibility"
+     value if tube_2.escape_door.contour_lighting.on: "visible" else "hidden" end;
+
+svgout id "intercom_1" attr "visibility"
+     value if tube_1.intercom.on: "visible" else "hidden" end;
+svgout id "intercom_2" attr "visibility"
+     value if tube_2.intercom.on: "visible" else "hidden" end;
+
+svgout id "safespace_lightbulb" attr "visibility"
+     value if middle_tunnel_channel.lighting.on: "visible" else "hidden" end;
+svgout id "safespace_darkness" attr "visibility"
+     value if middle_tunnel_channel.lighting.off: "visible" else "hidden" end;
+
+svgout id "safespace_audio" attr "visibility"
+     value if middle_tunnel_channel.intercom.on: "visible" else "hidden" end;
+
+svgout id "escape_route_left" attr "visibility"
+     value if middle_tunnel_channel.dynamic_escaperoute_indication.downward: "visible" else "hidden" end;
+svgout id "escape_route_right" attr "visibility"
+     value if middle_tunnel_channel.dynamic_escaperoute_indication.upward: "visible" else "hidden" end;
+
+svgout id "airpressure_up" attr "visibility"
+     value if middle_tunnel_channel.pressure.left: "visible" else "hidden" end;
+svgout id "airpressure_down" attr "visibility"
+     value if middle_tunnel_channel.pressure.right: "visible" else "hidden" end;
+
+svgin id "escape_door_1" event if tube_1.escape_door.sensor_open.off: tube_1.escape_door.sensor_open.u_on else tube_1.escape_door.sensor_open.u_off end;
+svgout id "escape_door_1" attr "fill"
+     value if tube_1.escape_door.sensor_open.on: "white" else "black" end;
+svgin id "escape_door_2" event if tube_2.escape_door.sensor_open.off: tube_2.escape_door.sensor_open.u_on else tube_2.escape_door.sensor_open.u_off end;
+svgout id "escape_door_2" attr "fill"
+     value if tube_2.escape_door.sensor_open.on: "white" else "black" end;

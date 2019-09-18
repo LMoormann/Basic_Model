@@ -1,0 +1,32 @@
+group def Hybrid_pump_cellar(uncontrollable event sensor_lowwater_on, sensor_lowwater_off, sensor_startwater_on, sensor_startwater_off, sensor_maxstartwater_on, sensor_maxstartwater_off, sensor_lowhighwater_on, sensor_lowhighwater_off, sensor_highhighwater_on, sensor_highhighwater_off;
+							 controllable event pump_1_on, pump_2_on, pump_1_off, pump_2_off):
+    // h: variable indicating the height of water
+    // only added for simulation purposes of the sensors, sensors work automatically in practice
+    cont height = 0;
+    const int height_lowwater = 20, height_startwater = 50, height_maxstartwater = 100, height_lowhighwater = 250, height_highhighwater = 280;
+    equation height' =
+        if false : 100
+        elif false : -100
+        else 0 end;
+
+    plant water_height_observer:
+        location:
+        marked; initial;
+        edge sensor_lowwater_on 	when height >= 	height_lowwater;
+        edge sensor_lowwater_off 	when height < 	height_lowwater;
+        edge sensor_startwater_on 	when height >= 	height_startwater;
+        edge sensor_startwater_off 	when height < 	height_startwater;
+        edge sensor_maxstartwater_on 	when height >= 	height_maxstartwater;
+        edge sensor_maxstartwater_off 	when height < 	height_maxstartwater;
+        edge sensor_lowhighwater_on 	when height >= 	height_lowhighwater;
+        edge sensor_lowhighwater_off 	when height < 	height_lowhighwater;
+        edge sensor_highhighwater_on 	when height >= 	height_highhighwater;
+        edge sensor_highhighwater_off 	when height < 	height_highhighwater;
+    end
+
+    plant pump_observer:
+    	location:
+    	marked; initial;
+    	edge pump_1_on, pump_2_on, pump_1_off, pump_2_off when false;
+	end
+end

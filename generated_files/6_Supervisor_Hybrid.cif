@@ -3553,6 +3553,117 @@ group hybrid_tube_2:
   invariant tube_2.j32.timer_release_signal.u_timeout needs hybrid_j32.timer.t >= hybrid_j32.timer.t_j32 and tube_2.j32.mode.on and tube_2.traffic_light_2.mode.off;
   invariant tube_2.j32.timer_release_signal.u_timeout needs hybrid_j32.timer.t >= hybrid_j32.timer.t_j32 and tube_2.j32.mode.on and tube_2.traffic_light_3.mode.off;
 end
+group hybrid_central_pump_cellar:
+  cont height = 0.0;
+  const int[20..20] height_lowwater = 20;
+  const int[50..50] height_startwater = 50;
+  const int[100..100] height_maxstartwater = 100;
+  const int[250..250] height_lowhighwater = 250;
+  const int[280..280] height_highhighwater = 280;
+  plant automaton water_height_observer:
+    location:
+      initial;
+      marked;
+      edge central_pump_cellar.sensor_lowwater.u_on when height >= height_lowwater;
+      edge central_pump_cellar.sensor_lowwater.u_off when height < height_lowwater;
+      edge central_pump_cellar.sensor_startwater.u_on when height >= height_startwater;
+      edge central_pump_cellar.sensor_startwater.u_off when height < height_startwater;
+      edge central_pump_cellar.sensor_maxstartwater.u_on when height >= height_maxstartwater;
+      edge central_pump_cellar.sensor_maxstartwater.u_off when height < height_maxstartwater;
+      edge central_pump_cellar.sensor_lowhighwater.u_on when height >= height_lowhighwater;
+      edge central_pump_cellar.sensor_lowhighwater.u_off when height < height_lowhighwater;
+      edge central_pump_cellar.sensor_highhighwater.u_on when height >= height_highhighwater;
+      edge central_pump_cellar.sensor_highhighwater.u_off when height < height_highhighwater;
+  end
+  plant automaton pump_observer:
+    location:
+      initial;
+      marked;
+      edge central_pump_cellar.pump_1.c_on, central_pump_cellar.pump_2.c_on, central_pump_cellar.pump_1.c_off, central_pump_cellar.pump_2.c_off when false;
+  end
+  equation height' = if false: 100.0 elif false: -100.0 else 0.0 end;
+end
+group hybrid_main_pump_cellar_1:
+  cont height = 0.0;
+  const int[20..20] height_lowwater = 20;
+  const int[50..50] height_startwater = 50;
+  const int[100..100] height_maxstartwater = 100;
+  const int[250..250] height_lowhighwater = 250;
+  const int[280..280] height_highhighwater = 280;
+  plant automaton water_height_observer:
+    location:
+      initial;
+      marked;
+      edge main_pump_cellar_1.sensor_lowwater.u_on when height >= height_lowwater;
+      edge main_pump_cellar_1.sensor_lowwater.u_off when height < height_lowwater;
+      edge main_pump_cellar_1.sensor_startwater.u_on when height >= height_startwater;
+      edge main_pump_cellar_1.sensor_startwater.u_off when height < height_startwater;
+      edge main_pump_cellar_1.sensor_maxstartwater.u_on when height >= height_maxstartwater;
+      edge main_pump_cellar_1.sensor_maxstartwater.u_off when height < height_maxstartwater;
+      edge main_pump_cellar_1.sensor_lowhighwater.u_on when height >= height_lowhighwater;
+      edge main_pump_cellar_1.sensor_lowhighwater.u_off when height < height_lowhighwater;
+      edge main_pump_cellar_1.sensor_highhighwater.u_on when height >= height_highhighwater;
+      edge main_pump_cellar_1.sensor_highhighwater.u_off when height < height_highhighwater;
+  end
+  plant automaton pump_observer:
+    location:
+      initial;
+      marked;
+      edge main_pump_cellar_1.pump_1.c_on, main_pump_cellar_1.pump_2.c_on, main_pump_cellar_1.pump_1.c_off, main_pump_cellar_1.pump_2.c_off when false;
+  end
+  equation height' = if false: 100.0 elif false: -100.0 else 0.0 end;
+end
+group hybrid_main_pump_cellar_2:
+  cont height = 0.0;
+  const int[20..20] height_lowwater = 20;
+  const int[50..50] height_startwater = 50;
+  const int[100..100] height_maxstartwater = 100;
+  const int[250..250] height_lowhighwater = 250;
+  const int[280..280] height_highhighwater = 280;
+  plant automaton water_height_observer:
+    location:
+      initial;
+      marked;
+      edge main_pump_cellar_2.sensor_lowwater.u_on when height >= height_lowwater;
+      edge main_pump_cellar_2.sensor_lowwater.u_off when height < height_lowwater;
+      edge main_pump_cellar_2.sensor_startwater.u_on when height >= height_startwater;
+      edge main_pump_cellar_2.sensor_startwater.u_off when height < height_startwater;
+      edge main_pump_cellar_2.sensor_maxstartwater.u_on when height >= height_maxstartwater;
+      edge main_pump_cellar_2.sensor_maxstartwater.u_off when height < height_maxstartwater;
+      edge main_pump_cellar_2.sensor_lowhighwater.u_on when height >= height_lowhighwater;
+      edge main_pump_cellar_2.sensor_lowhighwater.u_off when height < height_lowhighwater;
+      edge main_pump_cellar_2.sensor_highhighwater.u_on when height >= height_highhighwater;
+      edge main_pump_cellar_2.sensor_highhighwater.u_off when height < height_highhighwater;
+  end
+  plant automaton pump_observer:
+    location:
+      initial;
+      marked;
+      edge main_pump_cellar_2.pump_1.c_on, main_pump_cellar_2.pump_2.c_on, main_pump_cellar_2.pump_1.c_off, main_pump_cellar_2.pump_2.c_off when false;
+  end
+  equation height' = if false: 100.0 elif false: -100.0 else 0.0 end;
+end
+group hybrid_fire_extinguising_system:
+  cont height = 0.0;
+  const int[50..50] height_low = 50;
+  const int[250..250] height_high = 250;
+  plant automaton water_height_observer:
+    location:
+      initial;
+      marked;
+      edge fire_extinguishing_system.sensor_low.u_on when height >= height_low;
+      edge fire_extinguishing_system.sensor_low.u_off when height < height_low;
+      edge fire_extinguishing_system.sensor_high.u_on when height >= height_high;
+      edge fire_extinguishing_system.sensor_high.u_off when height < height_high;
+  end
+  plant automaton pump_observer:
+    location:
+      initial;
+      marked;
+      edge fire_extinguishing_system.pump.c_on, fire_extinguishing_system.pump.c_off when false;
+  end
+  equation height' = if false: 100.0 elif false: -100.0 else 0.0 end;
+end
 group tube_1:
   alg bool conditie_camera_1 = not mode.operational and (not traffic_light_1.mode.red or not traffic_light_2.mode.red or not traffic_light_3.mode.red);
   alg bool conditie_camera_2 = boom_barrier_1.actuator_down.on or boom_barrier_2.actuator_down.on;
@@ -5737,6 +5848,422 @@ group middle_tunnel_channel:
   requirement invariant dynamic_escaperoute_indication.c_upward needs dynamic_escaperoute_indication.off;
   requirement invariant dynamic_escaperoute_indication.c_downward needs dynamic_escaperoute_indication.off;
 end
+group fire_extinguishing_system:
+  plant automaton sensor_low:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = false;
+    alg bool OffMarked = false;
+    alg bool OnMarked = true;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_high:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = false;
+    alg bool OffMarked = false;
+    alg bool OnMarked = true;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton pump:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton physical_relation:
+    location:
+      initial;
+      marked;
+      edge sensor_high.u_on when sensor_low.on;
+      edge sensor_low.u_off when sensor_high.off and pump.on;
+      edge sensor_high.u_off when pump.on;
+  end
+  requirement invariant pump.c_on needs sensor_high.off;
+  requirement invariant pump.c_off needs sensor_high.on;
+end
+group central_pump_cellar:
+  plant automaton sensor_lowwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_startwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_maxstartwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_lowhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_highhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton pump_1:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton pump_2:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton pump_direction:
+    controllable c_main_pump_cellar_1;
+    controllable c_main_pump_cellar_2;
+    location main_pump_cellar_1:
+      initial;
+      marked;
+      edge c_main_pump_cellar_2 goto main_pump_cellar_2;
+    location main_pump_cellar_2:
+      edge c_main_pump_cellar_1 goto main_pump_cellar_1;
+  end
+  plant automaton physical_relation:
+    location:
+      initial;
+      marked;
+      edge sensor_lowwater.u_off when sensor_startwater.off and (pump_1.on or pump_2.on);
+      edge sensor_startwater.u_off when sensor_maxstartwater.off and (pump_1.on or pump_2.on);
+      edge sensor_maxstartwater.u_off when sensor_lowhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_lowhighwater.u_off when sensor_highhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_highhighwater.u_off when pump_1.on or pump_2.on;
+      edge sensor_startwater.u_on when sensor_lowwater.on;
+      edge sensor_maxstartwater.u_on when sensor_startwater.on;
+      edge sensor_lowhighwater.u_on when sensor_maxstartwater.on;
+      edge sensor_highhighwater.u_on when sensor_lowhighwater.on;
+  end
+end
+group main_pump_cellar_1:
+  plant automaton sensor_lowwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_startwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_maxstartwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_lowhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_highhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton pump_1:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton pump_2:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton physical_relation:
+    location:
+      initial;
+      marked;
+      edge sensor_lowwater.u_off when sensor_startwater.off and (pump_1.on or pump_2.on);
+      edge sensor_startwater.u_off when sensor_maxstartwater.off and (pump_1.on or pump_2.on);
+      edge sensor_maxstartwater.u_off when sensor_lowhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_lowhighwater.u_off when sensor_highhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_highhighwater.u_off when pump_1.on or pump_2.on;
+      edge sensor_startwater.u_on when sensor_lowwater.on;
+      edge sensor_maxstartwater.u_on when sensor_startwater.on;
+      edge sensor_lowhighwater.u_on when sensor_maxstartwater.on;
+      edge sensor_highhighwater.u_on when sensor_lowhighwater.on;
+  end
+end
+group main_pump_cellar_2:
+  plant automaton sensor_lowwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_startwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_maxstartwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_lowhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton sensor_highhighwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+    alg bool OffInitial = true;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial OffInitial;
+      marked OffMarked;
+      edge u_on goto on;
+    location on:
+      initial not OffInitial;
+      marked OnMarked;
+      edge u_off goto off;
+  end
+  plant automaton pump_1:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton pump_2:
+    controllable c_on;
+    controllable c_off;
+    alg bool OffMarked = true;
+    alg bool OnMarked = false;
+    location off:
+      initial;
+      marked OffMarked;
+      edge c_on goto on;
+    location on:
+      marked OnMarked;
+      edge c_off goto off;
+  end
+  plant automaton physical_relation:
+    location:
+      initial;
+      marked;
+      edge sensor_lowwater.u_off when sensor_startwater.off and (pump_1.on or pump_2.on);
+      edge sensor_startwater.u_off when sensor_maxstartwater.off and (pump_1.on or pump_2.on);
+      edge sensor_maxstartwater.u_off when sensor_lowhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_lowhighwater.u_off when sensor_highhighwater.off and (pump_1.on or pump_2.on);
+      edge sensor_highhighwater.u_off when pump_1.on or pump_2.on;
+      edge sensor_startwater.u_on when sensor_lowwater.on;
+      edge sensor_maxstartwater.u_on when sensor_startwater.on;
+      edge sensor_lowhighwater.u_on when sensor_maxstartwater.on;
+      edge sensor_highhighwater.u_on when sensor_lowhighwater.on;
+  end
+end
 group pressure_1_requirements:
   requirement invariant middle_tunnel_channel.pressure.c_left needs tube_1.standby.on or not tube_1.mode.operational and not tube_1.mode.support;
   requirement invariant middle_tunnel_channel.pressure.c_right needs tube_2.standby.on or not tube_2.mode.operational and not tube_2.mode.support;
@@ -5744,6 +6271,22 @@ group pressure_1_requirements:
   requirement invariant middle_tunnel_channel.pressure.c_off needs tube_2.mode.operational;
   requirement invariant middle_tunnel_channel.pressure.c_off needs tube_1.standby.off;
   requirement invariant middle_tunnel_channel.pressure.c_off needs tube_2.standby.off;
+end
+group main_pump_cellar_1_pump_1_requirements:
+  requirement invariant main_pump_cellar_1.pump_1.c_on needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_1.sensor_startwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_1.sensor_highhighwater.on;
+  requirement invariant main_pump_cellar_1.pump_1.c_off needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_1.sensor_lowwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_1.sensor_lowhighwater.off;
+end
+group main_pump_cellar_2_pump_1_requirements:
+  requirement invariant main_pump_cellar_2.pump_1.c_on needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_2.sensor_startwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_2.sensor_highhighwater.on;
+  requirement invariant main_pump_cellar_2.pump_1.c_off needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_2.sensor_lowwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_2.sensor_lowhighwater.off;
+end
+group main_pump_cellar_1_pump_2_requirements:
+  requirement invariant main_pump_cellar_1.pump_2.c_on needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_1.sensor_maxstartwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_1.sensor_highhighwater.on;
+  requirement invariant main_pump_cellar_1.pump_2.c_off needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_1.sensor_lowwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_1.sensor_lowhighwater.off;
+end
+group main_pump_cellar_2_pump_2_requirements:
+  requirement invariant main_pump_cellar_2.pump_2.c_on needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_2.sensor_maxstartwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_2.sensor_highhighwater.on;
+  requirement invariant main_pump_cellar_2.pump_2.c_off needs tube_1.mode.operational and tube_2.mode.operational and main_pump_cellar_2.sensor_lowwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and main_pump_cellar_2.sensor_lowhighwater.off;
 end
 requirement invariant tube_1_mode_c_support needs tube_2_mode.emergency;
 requirement invariant tube_2_mode_c_support needs tube_1_mode.emergency;
@@ -6105,6 +6648,13 @@ requirement invariant middle_tunnel_channel.dynamic_escaperoute_indication.c_off
 requirement invariant middle_tunnel_channel.intercom.c_on needs tube_1.evacuation.on and tube_1.switch_timer_audio.on_2 or tube_2.evacuation.on and tube_2.switch_timer_audio.on_2;
 requirement invariant middle_tunnel_channel.intercom.c_off needs tube_1.evacuation.off or not tube_1.switch_timer_audio.on_2;
 requirement invariant middle_tunnel_channel.intercom.c_off needs tube_2.evacuation.off or not tube_2.switch_timer_audio.on_2;
+requirement invariant fire_extinguishing_system.pump.c_on needs fire_extinguishing_system.sensor_low.off or tube_1.emergency_cabinet_A.fire_hose.on or tube_2.emergency_cabinet_A.fire_hose.on or tube_1.mode.emergency or tube_2.mode.emergency;
+requirement invariant central_pump_cellar.pump_1.c_on needs tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on;
+requirement invariant central_pump_cellar.pump_2.c_on needs tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_maxstartwater.on or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on;
+requirement invariant central_pump_cellar.pump_1.c_off needs tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_lowwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off;
+requirement invariant central_pump_cellar.pump_2.c_off needs tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.off or (tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off;
+requirement invariant central_pump_cellar.pump_direction.c_main_pump_cellar_2 needs main_pump_cellar_1.sensor_highhighwater.on;
+requirement invariant central_pump_cellar.pump_direction.c_main_pump_cellar_1 needs main_pump_cellar_1.sensor_lowhighwater.off;
 svgout id "mode_operational_1" attr "visibility" value if tube_1.mode.operational and tube_1.standby.off: "visible" else "hidden" end file "../4_Basic_Model.svg";
 svgout id "mode_emergency_1" attr "visibility" value if tube_1.mode.emergency and tube_1.evacuation.off: "visible" else "hidden" end file "../4_Basic_Model.svg";
 svgout id "mode_standby_1" attr "visibility" value if tube_1.standby.on: "visible" else "hidden" end file "../4_Basic_Model.svg";
@@ -6127,8 +6677,6 @@ svgin id "button_obstacle_1" event if hybrid_tube_1.hybrid_obstacle.no_obstacle:
 svgin id "button_obstacle_2" event if hybrid_tube_2.hybrid_obstacle.no_obstacle: hybrid_tube_2.hybrid_obstacle.u_place_obstacle else hybrid_tube_2.hybrid_obstacle.u_remove_obstacle end file "../4_Basic_Model.svg";
 svgout id "obstacle1" attr "visibility" value if hybrid_tube_1.hybrid_obstacle.obstacle: "visible" else "hidden" end file "../4_Basic_Model.svg";
 svgout id "obstacle2" attr "visibility" value if hybrid_tube_2.hybrid_obstacle.obstacle: "visible" else "hidden" end file "../4_Basic_Model.svg";
-svgout id "height" text value fmt("h: %f", hybrid_tube_1.hybrid_boom_barrier_1.height) file "../4_Basic_Model.svg";
-svgout id "height_2" text value fmt("h: %f", hybrid_tube_1.hybrid_boom_barrier_2.height) file "../4_Basic_Model.svg";
 svgout id "bb_1_normal_2" attr "visibility" value if hybrid_tube_1.hybrid_boom_barrier_1.height < 250: "visible" else "hidden" end file "../4_Basic_Model.svg";
 svgout id "bb_1_normal_3" attr "visibility" value if hybrid_tube_1.hybrid_boom_barrier_1.height < 200: "visible" else "hidden" end file "../4_Basic_Model.svg";
 svgout id "bb_1_normal_4" attr "visibility" value if hybrid_tube_1.hybrid_boom_barrier_1.height < 150: "visible" else "hidden" end file "../4_Basic_Model.svg";

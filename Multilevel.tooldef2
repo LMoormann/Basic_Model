@@ -5,7 +5,7 @@ string input_path = "1_Plant_Requirements.cif";
 
 // Output folder
 string output_dir = "generated_files/";
-string output_file = output_dir + "sup.cif";
+string output_file = output_dir + "5_Supervisor.cif";
 
 // Create directory for generated files.
 mkdir(output_dir, force=true);

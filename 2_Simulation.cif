@@ -1,4 +1,4 @@
-import "1_Plant_Requirements.cif", "hybrid/Hybrid_traffic_tube.cif", "3_Visualisation.cif";
+import "1_Plant_Requirements.cif", "hybrid/Hybrid_traffic_tube.cif", "hybrid/Hybrid_pump_cellar.cif", "hybrid/Hybrid_fire_extinguishing_system.cif", "3_Visualisation.cif";
 
 hybrid_tube_1 : Hybrid_traffic_tube(tube_1.boom_barrier_1.actuator_up.on, tube_1.boom_barrier_1.actuator_down.on, tube_1.boom_barrier_2.actuator_up.on, tube_1.boom_barrier_2.actuator_down.on,
 									tube_1.boom_barrier_1.open, tube_1.boom_barrier_1.closed, tube_1.boom_barrier_2.open, tube_1.boom_barrier_2.closed,
@@ -23,3 +23,13 @@ hybrid_tube_2 : Hybrid_traffic_tube(tube_2.boom_barrier_1.actuator_up.on, tube_2
 							  		tube_2.lightsensor.u_0, tube_2.lightsensor.u_1, tube_2.lightsensor.u_2, tube_2.lightsensor.u_3, tube_2.lightsensor.u_4, tube_2.lightsensor.u_5, tube_2.lightsensor.u_6, tube_2.lightsensor.u_7, tube_2.lightsensor.u_8,
 							  		tube_1.switch_timer_audio.c_on, tube_1.switch_timer_audio.c_off,
 							  		tube_1.switch_timer_audio.u_timeout);
+
+hybrid_central_pump_cellar : Hybrid_pump_cellar(central_pump_cellar.sensor_lowwater.u_on, central_pump_cellar.sensor_lowwater.u_off, central_pump_cellar.sensor_startwater.u_on, central_pump_cellar.sensor_startwater.u_off, central_pump_cellar.sensor_maxstartwater.u_on, central_pump_cellar.sensor_maxstartwater.u_off, central_pump_cellar.sensor_lowhighwater.u_on, central_pump_cellar.sensor_lowhighwater.u_off, central_pump_cellar.sensor_highhighwater.u_on, central_pump_cellar.sensor_highhighwater.u_off,
+							 					central_pump_cellar.pump_1.c_on, central_pump_cellar.pump_2.c_on, central_pump_cellar.pump_1.c_off, central_pump_cellar.pump_2.c_off);
+hybrid_main_pump_cellar_1 : Hybrid_pump_cellar(main_pump_cellar_1.sensor_lowwater.u_on, main_pump_cellar_1.sensor_lowwater.u_off, main_pump_cellar_1.sensor_startwater.u_on, main_pump_cellar_1.sensor_startwater.u_off, main_pump_cellar_1.sensor_maxstartwater.u_on, main_pump_cellar_1.sensor_maxstartwater.u_off, main_pump_cellar_1.sensor_lowhighwater.u_on, main_pump_cellar_1.sensor_lowhighwater.u_off, main_pump_cellar_1.sensor_highhighwater.u_on, main_pump_cellar_1.sensor_highhighwater.u_off,
+							 				   main_pump_cellar_1.pump_1.c_on, main_pump_cellar_1.pump_2.c_on, main_pump_cellar_1.pump_1.c_off, main_pump_cellar_1.pump_2.c_off);
+hybrid_main_pump_cellar_2 : Hybrid_pump_cellar(main_pump_cellar_2.sensor_lowwater.u_on, main_pump_cellar_2.sensor_lowwater.u_off, main_pump_cellar_2.sensor_startwater.u_on, main_pump_cellar_2.sensor_startwater.u_off, main_pump_cellar_2.sensor_maxstartwater.u_on, main_pump_cellar_2.sensor_maxstartwater.u_off, main_pump_cellar_2.sensor_lowhighwater.u_on, main_pump_cellar_2.sensor_lowhighwater.u_off, main_pump_cellar_2.sensor_highhighwater.u_on, main_pump_cellar_2.sensor_highhighwater.u_off,
+							 				   main_pump_cellar_2.pump_1.c_on, main_pump_cellar_2.pump_2.c_on, main_pump_cellar_2.pump_1.c_off, main_pump_cellar_2.pump_2.c_off);
+
+hybrid_fire_extinguising_system : Hybrid_fire_extinguishing_system(fire_extinguishing_system.sensor_low.u_on, fire_extinguishing_system.sensor_low.u_off, fire_extinguishing_system.sensor_high.u_on, fire_extinguishing_system.sensor_high.u_off,
+																   fire_extinguishing_system.pump.c_on, fire_extinguishing_system.pump.c_off);

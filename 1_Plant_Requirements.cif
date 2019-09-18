@@ -5,11 +5,11 @@ tube_2 : Traffic_tube();
 
 middle_tunnel_channel : Middle_tunnel_channel();
 
-// fire_extinguishing_system : Fire_extinguishing_system();
-//
-// central_pump_cellar : Central_pump_cellar();
-// main_pump_cellar_1 : Main_pump_cellar();
-// main_pump_cellar_2 : Main_pump_cellar();
+fire_extinguishing_system : Fire_extinguishing_system();
+
+central_pump_cellar : Central_pump_cellar();
+main_pump_cellar_1 : Main_pump_cellar();
+main_pump_cellar_2 : Main_pump_cellar();
 
 requirement tube_1.mode.c_support needs tube_2.mode.emergency;
 requirement tube_2.mode.c_support needs tube_1.mode.emergency;
@@ -45,25 +45,25 @@ requirement middle_tunnel_channel.intercom.c_on needs (tube_1.evacuation.on and 
 requirement middle_tunnel_channel.intercom.c_off needs tube_1.evacuation.off or not tube_1.switch_timer_audio.on_2;
 requirement middle_tunnel_channel.intercom.c_off needs tube_2.evacuation.off or not tube_2.switch_timer_audio.on_2;
 
-// requirement fire_extinguishing_system.pump.c_on needs fire_extinguishing_system.sensor_low.off or tube_1.emergency_cabinet_A.fire_hose.on or tube_2.emergency_cabinet_A.fire_hose.on or tube_1.mode.emergency or tube_2.mode.emergency;
-//
-// requirement central_pump_cellar.pump_1.c_on needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on);
-// requirement central_pump_cellar.pump_2.c_on needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_maxstartwater.on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on);
-// requirement central_pump_cellar.pump_1.c_off needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_lowwater.off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off);
-// requirement central_pump_cellar.pump_2.c_off needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off);
-// requirement central_pump_cellar.pump_direction.c_main_pump_cellar_2 needs main_pump_cellar_1.sensor_highhighwater.on;
-// requirement central_pump_cellar.pump_direction.c_main_pump_cellar_1 needs main_pump_cellar_1.sensor_lowhighwater.off;
+requirement fire_extinguishing_system.pump.c_on needs fire_extinguishing_system.sensor_low.off or tube_1.emergency_cabinet_A.fire_hose.on or tube_2.emergency_cabinet_A.fire_hose.on or tube_1.mode.emergency or tube_2.mode.emergency;
+
+requirement central_pump_cellar.pump_1.c_on needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on);
+requirement central_pump_cellar.pump_2.c_on needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_maxstartwater.on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_highhighwater.on);
+requirement central_pump_cellar.pump_1.c_off needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_lowwater.off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off);
+requirement central_pump_cellar.pump_2.c_off needs (tube_1.mode.operational and tube_2.mode.operational and central_pump_cellar.sensor_startwater.off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and central_pump_cellar.sensor_lowhighwater.off);
+requirement central_pump_cellar.pump_direction.c_main_pump_cellar_2 needs main_pump_cellar_1.sensor_highhighwater.on;
+requirement central_pump_cellar.pump_direction.c_main_pump_cellar_1 needs main_pump_cellar_1.sensor_lowhighwater.off;
 
 group def main_pump_cellar_pump_1_requirements(controllable event c_on, c_off; location startwater_on, highhighwater_on, lowwater_off, lowhighwater_off):
 	requirement c_on needs (tube_1.mode.operational and tube_2.mode.operational and startwater_on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and highhighwater_on);
 	requirement c_off needs (tube_1.mode.operational and tube_2.mode.operational and lowwater_off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and lowhighwater_off);
 end
-// main_pump_cellar_1_pump_1_requirements : main_pump_cellar_pump_1_requirements(main_pump_cellar_1.pump_1.c_on, main_pump_cellar_1.pump_1.c_off, main_pump_cellar_1.sensor_startwater.on, main_pump_cellar_1.sensor_highhighwater.on, main_pump_cellar_1.sensor_lowwater.off, main_pump_cellar_1.sensor_lowhighwater.off);
-// main_pump_cellar_2_pump_1_requirements : main_pump_cellar_pump_1_requirements(main_pump_cellar_2.pump_1.c_on, main_pump_cellar_2.pump_1.c_off, main_pump_cellar_2.sensor_startwater.on, main_pump_cellar_2.sensor_highhighwater.on, main_pump_cellar_2.sensor_lowwater.off, main_pump_cellar_2.sensor_lowhighwater.off);
+main_pump_cellar_1_pump_1_requirements : main_pump_cellar_pump_1_requirements(main_pump_cellar_1.pump_1.c_on, main_pump_cellar_1.pump_1.c_off, main_pump_cellar_1.sensor_startwater.on, main_pump_cellar_1.sensor_highhighwater.on, main_pump_cellar_1.sensor_lowwater.off, main_pump_cellar_1.sensor_lowhighwater.off);
+main_pump_cellar_2_pump_1_requirements : main_pump_cellar_pump_1_requirements(main_pump_cellar_2.pump_1.c_on, main_pump_cellar_2.pump_1.c_off, main_pump_cellar_2.sensor_startwater.on, main_pump_cellar_2.sensor_highhighwater.on, main_pump_cellar_2.sensor_lowwater.off, main_pump_cellar_2.sensor_lowhighwater.off);
 
 group def main_pump_cellar_pump_2_requirements(controllable event c_on, c_off; location maxstartwater_on, highhighwater_on, lowwater_off, lowhighwater_off):
 	requirement c_on needs (tube_1.mode.operational and tube_2.mode.operational and maxstartwater_on) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and highhighwater_on);
 	requirement c_off needs (tube_1.mode.operational and tube_2.mode.operational and lowwater_off) or ((tube_1.mode.emergency or tube_1.mode.recovery or tube_1.mode.emergency or tube_2.mode.recovery) and lowhighwater_off);
 end
-// main_pump_cellar_1_pump_2_requirements : main_pump_cellar_pump_2_requirements(main_pump_cellar_1.pump_2.c_on, main_pump_cellar_1.pump_2.c_off, main_pump_cellar_1.sensor_maxstartwater.on, main_pump_cellar_1.sensor_highhighwater.on, main_pump_cellar_1.sensor_lowwater.off, main_pump_cellar_1.sensor_lowhighwater.off);
-// main_pump_cellar_2_pump_2_requirements : main_pump_cellar_pump_2_requirements(main_pump_cellar_2.pump_2.c_on, main_pump_cellar_2.pump_2.c_off, main_pump_cellar_2.sensor_maxstartwater.on, main_pump_cellar_2.sensor_highhighwater.on, main_pump_cellar_2.sensor_lowwater.off, main_pump_cellar_2.sensor_lowhighwater.off);
+main_pump_cellar_1_pump_2_requirements : main_pump_cellar_pump_2_requirements(main_pump_cellar_1.pump_2.c_on, main_pump_cellar_1.pump_2.c_off, main_pump_cellar_1.sensor_maxstartwater.on, main_pump_cellar_1.sensor_highhighwater.on, main_pump_cellar_1.sensor_lowwater.off, main_pump_cellar_1.sensor_lowhighwater.off);
+main_pump_cellar_2_pump_2_requirements : main_pump_cellar_pump_2_requirements(main_pump_cellar_2.pump_2.c_on, main_pump_cellar_2.pump_2.c_off, main_pump_cellar_2.sensor_maxstartwater.on, main_pump_cellar_2.sensor_highhighwater.on, main_pump_cellar_2.sensor_lowwater.off, main_pump_cellar_2.sensor_lowhighwater.off);

@@ -4,7 +4,7 @@ from "lib:cif3" import *;
 string mrg_path = "generated_files/6_Supervisor_Hybrid.cif";    //Location of supervisor & simulation/hybrid merged
 
 // Input files
-string sup_path = "generated_files/sup.cif";           //Location of supervisor
+string sup_path = "generated_files/5_Supervisor.cif";           //Location of supervisor
 string sim_path = "2_Simulation.cif";                  //Location of simulation/hybrid model
 
 // Merge supervisor with hybrid plant simulation model.
@@ -22,4 +22,4 @@ cif3sim(sim_path,
         "--speed=1",
         "--solver-root-maxchk=0.5",
         "--max-delay=10.0",
-        "--option-dialog=no");
+        "--option-dialog=no",);

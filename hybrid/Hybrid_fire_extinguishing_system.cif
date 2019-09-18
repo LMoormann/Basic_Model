@@ -1,0 +1,26 @@
+group def Hybrid_fire_extinguishing_system(uncontrollable event sensor_low_on, sensor_low_off, sensor_high_on, sensor_high_off;
+							 controllable event pump_on, pump_off):
+    // h: variable indicating the height of water
+    // only added for simulation purposes of the sensors, sensors work automatically in practice
+    cont height = 0;
+    const int height_low = 50, height_high = 250;
+    equation height' =
+        if false : 100
+        elif false : -100
+        else 0 end;
+
+    plant water_height_observer:
+        location:
+        marked; initial;
+        edge sensor_low_on 		when height >= 	height_low;
+        edge sensor_low_off 	when height < 	height_low;
+        edge sensor_high_on 	when height >= 	height_high;
+        edge sensor_high_off 	when height < 	height_high;
+    end
+
+    plant pump_observer:
+    	location:
+    	marked; initial;
+    	edge pump_on, pump_off when false;
+	end
+end

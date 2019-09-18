@@ -1,0 +1,12 @@
+group central_pump_cellar:
+  group sensor_lowwater:
+    uncontrollable u_on;
+    uncontrollable u_off;
+  end
+end
+automaton event_disabler:
+  alphabet central_pump_cellar.sensor_lowwater.u_on, central_pump_cellar.sensor_lowwater.u_off;
+  location:
+    initial;
+    edge central_pump_cellar.sensor_lowwater.u_on, central_pump_cellar.sensor_lowwater.u_off when false;
+end

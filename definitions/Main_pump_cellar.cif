@@ -1,0 +1,27 @@
+import "Actuator.cif", "Sensor.cif";
+
+group def Main_pump_cellar():
+
+sensor_lowwater : Sensor(true,true,false);
+sensor_startwater : Sensor(true,true,false);
+sensor_maxstartwater : Sensor(true,true,false);
+sensor_lowhighwater : Sensor(true,true,false);
+sensor_highhighwater : Sensor(true,true,false);
+pump_1 : Actuator(true,false);
+pump_2 : Actuator(true,false);
+
+plant physical_relation:
+	location:
+		initial; marked;
+		edge sensor_lowwater.u_off when sensor_startwater.off and (pump_1.on or pump_2.on);
+		edge sensor_startwater.u_off when sensor_maxstartwater.off and (pump_1.on or pump_2.on);
+		edge sensor_maxstartwater.u_off when sensor_lowhighwater.off and (pump_1.on or pump_2.on);
+		edge sensor_lowhighwater.u_off when sensor_highhighwater.off and (pump_1.on or pump_2.on);
+		edge sensor_highhighwater.u_off when pump_1.on or pump_2.on;
+		edge sensor_startwater.u_on when sensor_lowwater.on;
+		edge sensor_maxstartwater.u_on when sensor_startwater.on;
+		edge sensor_lowhighwater.u_on when sensor_maxstartwater.on;
+		edge sensor_highhighwater.u_on when sensor_lowhighwater.on;
+end
+
+end

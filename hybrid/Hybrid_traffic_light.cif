@@ -1,0 +1,61 @@
+import "../definitions/Timer.cif";
+
+group def Hybrid_traffic_light(location off, flashing, yellow, red, timer_j32_finished; controllable event c_off, c_yellow, c_flashing, c_red; uncontrollable event u_release_signal_on, u_release_signal_off):
+
+timer_yellow : Timer();
+timer_flashing : Timer();
+timer_red : Timer();
+timer_release_signal : Timer();
+
+plant timer_traffic_light:
+    cont t = 0;
+    equation t' = 1;
+    const int t_flashing = 6;
+    const int t_yellow = 6;
+    const int t_red = 6;
+    const int t_release_signal = 4;
+    location main:
+        initial; marked;
+        edge c_off, c_yellow, c_flashing, c_red do  t:= 0;
+        edge u_release_signal_on do t:= 0 goto red_released;
+    location red_released:
+        edge u_release_signal_off goto main;
+end
+
+plant mode:
+	location main:
+	    initial; marked;
+	    edge c_off when timer_flashing.finished;
+	    edge c_flashing when (off and timer_j32_finished) or (yellow and timer_yellow.finished) or (red and timer_red.finished);
+	    edge c_yellow when timer_flashing.finished;
+	    edge c_red when timer_yellow.finished;
+	    edge u_release_signal_on when timer_release_signal.finished;
+end
+
+invariant timer_yellow.u_timeout 		needs timer_traffic_light.t >= timer_traffic_light.t_yellow and yellow;
+invariant timer_flashing.u_timeout   needs timer_traffic_light.t >= timer_traffic_light.t_flashing and flashing;
+invariant timer_red.u_timeout      needs timer_traffic_light.t >= timer_traffic_light.t_red and red;
+invariant timer_release_signal.u_timeout  needs timer_traffic_light.t >= timer_traffic_light.t_release_signal and red;
+
+invariant timer_yellow.c_on         needs yellow;
+invariant timer_flashing.c_on       needs flashing;
+invariant timer_red.c_on          	needs red;
+invariant timer_release_signal.c_on needs red;
+
+invariant timer_yellow.c_reset        	needs not yellow;
+invariant timer_flashing.c_reset    	needs not flashing;
+invariant timer_red.c_reset        		needs not red;
+invariant timer_release_signal.c_reset  needs not red;
+
+plant timer_flash:
+    controllable c_on, c_off;
+    cont t = 0;
+    equation t' = 1;
+    location off:
+        initial; marked;
+        edge c_on when flashing and t>0.5 do t:=0 goto on;
+    location on:
+    	edge c_off when not flashing or t>0.5 do t:=0 goto off;
+end
+
+end

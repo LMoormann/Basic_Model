@@ -1,0 +1,15 @@
+plant def Lightsensor():
+	disc int[0..8] mode = 0;
+    uncontrollable u_0, u_1, u_2, u_3, u_4, u_5, u_6, u_7, u_8;
+    location:
+        initial; marked;
+        edge u_0 when not (mode=0) do mode:=0;
+        edge u_1 when not (mode=1) do mode:=1;
+        edge u_2 when not (mode=2) do mode:=2;
+        edge u_3 when not (mode=3) do mode:=3;
+        edge u_4 when not (mode=4) do mode:=4;
+        edge u_5 when not (mode=5) do mode:=5;
+        edge u_6 when not (mode=6) do mode:=6;
+        edge u_7 when not (mode=7) do mode:=7;
+        edge u_8 when not (mode=8) do mode:=8;
+end

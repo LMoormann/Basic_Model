@@ -1,0 +1,19 @@
+group def Hybrid_boom_barrier(location move_up, move_down; alg bool up, down; event sensor_up_on, sensor_up_off, sensor_down_on, sensor_down_off):
+    // h: variable indicating the height of the boom barrier
+    // only added for simulation purposes of the sensors, sensors work automatically in practice
+    cont height = 300;
+    const int height_up = 300, height_down = 0;
+    equation height' =
+        if move_up and not up : 100
+        elif move_down and not down : -100
+        else 0 end;
+
+    plant position_boombarrier_observer:
+        location:
+        marked; initial;
+        edge sensor_up_off      when height < height_up;
+        edge sensor_up_on       when height > height_up;
+        edge sensor_down_off    when height > height_down;
+        edge sensor_down_on     when height < height_down;
+    end
+end

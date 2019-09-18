@@ -1,0 +1,14 @@
+import "Hybrid_sensor.cif";
+
+group def Hybrid_emergency_cabinet_A(uncontrollable event sensor_open_off, sensor_open_on, sensor_hand_off, sensor_hand_on, sensor_fire_hose_off, sensor_fire_hose_on, sensor_intercom_off, sensor_intercom_on):
+	sensor_open : Hybrid_sensor(sensor_open_off, sensor_open_on);
+	hand_extinguisher : Hybrid_sensor(sensor_hand_off, sensor_hand_on);
+	fire_hose : Hybrid_sensor(sensor_fire_hose_off, sensor_fire_hose_on);
+	intercom : Hybrid_sensor(sensor_intercom_off, sensor_intercom_on);
+end
+
+group def Hybrid_emergency_cabinet_C(uncontrollable event sensor_open_off, sensor_open_on, sensor_hand_off, sensor_hand_on, sensor_intercom_off, sensor_intercom_on):
+	sensor_open : Hybrid_sensor(sensor_open_off, sensor_open_on);
+	hand_extinguisher : Hybrid_sensor(sensor_hand_off, sensor_hand_on);
+	intercom : Hybrid_sensor(sensor_intercom_off, sensor_intercom_on);
+end

@@ -1,0 +1,10 @@
+plant def Hybrid_obstacle(uncontrollable event u_off_1, u_on_1, u_off_2, u_on_2):
+    uncontrollable u_place_obstacle, u_remove_obstacle;
+    location no_obstacle:
+        initial; marked;
+        edge u_place_obstacle goto obstacle;
+        edge u_off_1, u_off_2;
+    location obstacle:
+        edge u_remove_obstacle goto no_obstacle;
+        edge u_on_1, u_on_2;
+end

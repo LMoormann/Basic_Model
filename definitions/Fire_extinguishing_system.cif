@@ -1,0 +1,20 @@
+import "Actuator.cif", "Sensor.cif";
+
+group def Fire_extinguishing_system():
+
+sensor_low : Sensor(false,false,true);
+sensor_high : Sensor(false,false,true);
+pump : Actuator(true,false);
+
+plant physical_relation:
+	location:
+		initial; marked;
+		edge sensor_high.u_on when sensor_low.on;
+		edge sensor_low.u_off when sensor_high.off and pump.on;
+		edge sensor_high.u_off when pump.on;
+end
+
+requirement pump.c_on needs sensor_high.off;
+requirement pump.c_off needs sensor_high.on;
+
+end

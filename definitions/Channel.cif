@@ -1,0 +1,24 @@
+plant def Channel():
+    controllable c_1_off, c_2_off, c_3_off, c_4_off, c_5_off, c_6_off, c_1_on, c_2_on, c_3_on, c_4_on, c_5_on, c_6_on;
+    location off:
+        initial;
+        marked;
+        edge c_1_on goto camera_1;
+        edge c_2_on goto camera_2;
+        edge c_3_on goto camera_3;
+        edge c_4_on goto camera_4;
+        edge c_5_on goto camera_5;
+        edge c_6_on goto camera_6;
+    location camera_1:
+    	edge c_1_off goto off;
+    location camera_2:
+    	edge c_2_off goto off;
+    location camera_3:
+    	edge c_3_off goto off;
+    location camera_4:
+    	edge c_4_off goto off;
+    location camera_5:
+    	edge c_5_off goto off;
+    location camera_6:
+    	edge c_6_off goto off;
+end

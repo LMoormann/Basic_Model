@@ -1,0 +1,12 @@
+group def Hybrid_J32(controllable event c_aan; controllable event c_uit):
+
+plant timer:
+    cont t = 0;
+    equation t' = 1;
+    const int t_j32 = 10;
+    location:
+        initial; marked;
+        edge c_aan, c_uit do t:= 0;
+end
+
+end

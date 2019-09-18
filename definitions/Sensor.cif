@@ -1,0 +1,11 @@
+plant def Sensor(alg bool OffInitial; alg bool OffMarked; alg bool OnMarked):
+    uncontrollable u_on, u_off;
+    location off:
+    	initial OffInitial;
+        marked OffMarked;
+        edge u_on goto on;
+    location on:
+    	initial not OffInitial;
+    	marked OnMarked;
+        edge u_off goto off;
+end

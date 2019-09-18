@@ -1,0 +1,16 @@
+plant def Lighting():
+	disc int[0..8] mode = 0;
+    controllable c_0, c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8;
+    location:
+        initial; marked;
+        edge c_0 when not (mode=0) do mode:=0;
+        edge c_1 when not (mode=1) do mode:=1;
+        edge c_2 when not (mode=2) do mode:=2;
+        edge c_3 when not (mode=3) do mode:=3;
+        edge c_4 when not (mode=4) do mode:=4;
+        edge c_5 when not (mode=5) do mode:=5;
+        edge c_6 when not (mode=6) do mode:=6;
+        edge c_7 when not (mode=7) do mode:=7;
+        edge c_8 when not (mode=8) do mode:=8;
+end
+

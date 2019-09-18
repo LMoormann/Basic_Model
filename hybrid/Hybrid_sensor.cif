@@ -1,0 +1,10 @@
+plant def Hybrid_sensor(uncontrollable event_off, event_on):
+    uncontrollable u_on, u_off;
+    location off:
+        initial; marked;
+        edge u_on goto on;
+        edge event_off;
+    location on:
+        edge u_off goto off;
+        edge event_on;
+end

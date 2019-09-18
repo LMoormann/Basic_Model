@@ -1,0 +1,18 @@
+import "../definitions/Button.cif";
+
+group def Hybrid_light():
+
+button_add : Button(true, true);
+button_remove : Button(true, true);
+
+plant light_level:
+    disc int level = 0;
+    location:
+        initial; marked;
+        edge button_add.button.u_press when level < 20 do level:=level+1;
+        edge button_add.button.u_press when level = 20;
+        edge button_remove.button.u_press when level > 0 do level:=level-1;
+        edge button_remove.button.u_press when level = 0;
+end
+
+end

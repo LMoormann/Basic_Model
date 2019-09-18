@@ -1,0 +1,23 @@
+group def Button(alg bool condition_press; alg bool condition_done):
+
+plant button:
+    uncontrollable u_press;
+    location:
+    	initial;
+        marked;
+        edge u_press;
+end
+
+plant observer:
+	controllable c_done;
+	monitor button.u_press;
+	location released:
+		initial;
+		marked;
+		edge button.u_press when condition_press goto pressed;
+	location pressed:
+		marked;
+		edge c_done when condition_done goto released;
+end
+
+end

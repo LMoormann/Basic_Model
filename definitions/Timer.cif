@@ -1,0 +1,26 @@
+plant def Timer():
+    controllable c_on, c_reset;
+    uncontrollable u_timeout;
+    location off:
+        initial; marked;
+        edge c_on goto running;
+    location running:
+        edge c_reset goto off;
+        edge u_timeout goto finished;
+    location finished:
+        edge c_reset goto off;
+end
+
+plant def Wissel_timer():
+	controllable c_on, c_off;
+    uncontrollable u_timeout;
+    location off:
+        initial; marked;
+        edge c_on goto on_1;
+    location on_1:
+        edge c_off goto off;
+        edge u_timeout goto on_2;
+    location on_2:
+        edge c_off goto off;
+        edge u_timeout goto on_1;
+end

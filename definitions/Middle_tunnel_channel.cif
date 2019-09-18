@@ -1,0 +1,41 @@
+import "Actuator.cif";
+
+group def Middle_tunnel_channel():
+
+plant pressure:
+    controllable c_off, c_left, c_right;
+    location off:
+        initial; marked;
+        edge c_left goto left;
+        edge c_right goto right;
+    location left:
+        edge c_off goto off;
+        edge c_right goto right;
+    location right:
+        edge c_off goto off;
+        edge c_left goto left;
+end
+
+lighting : Actuator(true, false);
+
+plant dynamic_escaperoute_indication:
+    controllable c_off, c_upward, c_downward;
+    location off:
+        initial; marked;
+        edge c_upward goto upward;
+        edge c_downward goto downward;
+    location upward:
+        edge c_off goto off;
+        edge c_downward goto downward;
+    location downward:
+        edge c_off goto off;
+        edge c_upward goto upward;
+end
+
+intercom : Actuator(true,false);
+
+requirement pressure.c_left needs pressure.off;
+requirement pressure.c_right needs pressure.off;
+requirement dynamic_escaperoute_indication.c_upward needs dynamic_escaperoute_indication.off;
+requirement dynamic_escaperoute_indication.c_downward needs dynamic_escaperoute_indication.off;
+end

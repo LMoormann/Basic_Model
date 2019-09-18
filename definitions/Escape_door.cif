@@ -1,0 +1,9 @@
+import "Actuator.cif", "Sensor.cif";
+
+group def Escape_door():
+
+sensor_open : Sensor(true,true,false);
+sound_beacon : Actuator(true,false);
+contour_lighting : Actuator(true,false);
+
+end

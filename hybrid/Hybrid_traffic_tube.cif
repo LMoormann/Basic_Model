@@ -1,0 +1,74 @@
+import "Hybrid_boom_barrier.cif","Hybrid_traffic_light.cif","Hybrid_J32.cif","Hybrid_obstacle.cif","Hybrid_smoke.cif","Hybrid_sensor.cif","Hybrid_emergency_cabinet.cif","Hybrid_light.cif";
+
+group def Hybrid_traffic_tube(location move_up_1, move_down_1, move_up_2, move_down_2;
+							  alg bool up_1, down_1, up_2, down_2;
+							  uncontrollable event sensor_up_on_1, sensor_up_off_1, sensor_down_on_1, sensor_down_off_1, obstacle_on_1, obstacle_off_1, sensor_up_on_2, sensor_up_off_2, sensor_down_on_2, sensor_down_off_2, obstacle_on_2, obstacle_off_2;
+							  location timer_j32_finished, j32_on, traffic_light_1_off, traffic_light_1_flashing, traffic_light_1_yellow, traffic_light_1_red, traffic_light_2_off, traffic_light_2_flashing, traffic_light_2_yellow, traffic_light_2_red, traffic_light_3_off, traffic_light_3_flashing, traffic_light_3_yellow, traffic_light_3_red;
+							  controllable event c_traffic_light_1_off, c_traffic_light_1_yellow, c_traffic_light_1_flashing, c_traffic_light_1_red, c_traffic_light_2_off, c_traffic_light_2_yellow, c_traffic_light_2_flashing, c_traffic_light_2_red, c_traffic_light_3_off, c_traffic_light_3_yellow, c_traffic_light_3_flashing, c_traffic_light_3_red;
+							  uncontrollable event u_timer_j32_timout, u_traffic_light_1_release_signal_on, u_traffic_light_1_release_signal_off, u_traffic_light_2_release_signal_on, u_traffic_light_2_release_signal_off, u_traffic_light_3_release_signal_on, u_traffic_light_3_release_signal_off;
+							  controllable event c_j32_on, c_j32_off;
+							  uncontrollable event u_smoke_0, u_smoke_1, u_smoke_2, u_smoke_3, u_smoke_4, u_smoke_5, u_smoke_6, u_smoke_7, u_smoke_8;
+							  uncontrollable event u_light_0, u_light_1, u_light_2, u_light_3, u_light_4, u_light_5, u_light_6, u_light_7, u_light_8;
+							  controllable event c_switch_timer_audio_on, c_switch_timer_audio_off;
+							  uncontrollable event u_switch_timer_audio_timeout):
+
+hybrid_boom_barrier_1 : Hybrid_boom_barrier(move_up_1, move_down_1, up_1, down_1, sensor_up_on_1, sensor_up_off_1, sensor_down_on_1, sensor_down_off_1);
+hybrid_boom_barrier_2 : Hybrid_boom_barrier(move_up_2, move_down_2, up_2, down_2, sensor_up_on_2, sensor_up_off_2, sensor_down_on_2, sensor_down_off_2);
+
+hybrid_traffic_light_1 : Hybrid_traffic_light(traffic_light_1_off, traffic_light_1_flashing, traffic_light_1_yellow, traffic_light_1_red, timer_j32_finished, c_traffic_light_1_off, c_traffic_light_1_yellow, c_traffic_light_1_flashing, c_traffic_light_1_red, u_traffic_light_1_release_signal_on, u_traffic_light_1_release_signal_off);
+hybrid_traffic_light_2 : Hybrid_traffic_light(traffic_light_2_off, traffic_light_2_flashing, traffic_light_2_yellow, traffic_light_2_red, timer_j32_finished, c_traffic_light_2_off, c_traffic_light_2_yellow, c_traffic_light_2_flashing, c_traffic_light_2_red, u_traffic_light_2_release_signal_on, u_traffic_light_2_release_signal_off);
+hybrid_traffic_light_3 : Hybrid_traffic_light(traffic_light_3_off, traffic_light_3_flashing, traffic_light_3_yellow, traffic_light_3_red, timer_j32_finished, c_traffic_light_3_off, c_traffic_light_3_yellow, c_traffic_light_3_flashing, c_traffic_light_3_red, u_traffic_light_3_release_signal_on, u_traffic_light_3_release_signal_off);
+hybrid_j32 : Hybrid_J32(c_j32_on, c_j32_off);
+invariant u_timer_j32_timout needs hybrid_j32.timer.t >= hybrid_j32.timer.t_j32 and j32_on and traffic_light_1_off;
+invariant u_timer_j32_timout needs hybrid_j32.timer.t >= hybrid_j32.timer.t_j32 and j32_on and traffic_light_2_off;
+invariant u_timer_j32_timout needs hybrid_j32.timer.t >= hybrid_j32.timer.t_j32 and j32_on and traffic_light_3_off;
+
+hybrid_obstacle : Hybrid_obstacle(obstacle_off_1, obstacle_on_1, obstacle_off_2, obstacle_on_2);
+
+smoke : Hybrid_smoke();
+
+group smoke_reqs:
+	invariant u_smoke_0 needs smoke.smoke_level.level < 7;
+	invariant u_smoke_1 needs smoke.smoke_level.level = 7;
+	invariant u_smoke_2 needs smoke.smoke_level.level = 8 or smoke.smoke_level.level = 9;
+	invariant u_smoke_3 needs smoke.smoke_level.level = 10 or smoke.smoke_level.level = 11;
+	invariant u_smoke_4 needs smoke.smoke_level.level = 12;
+	invariant u_smoke_5 needs smoke.smoke_level.level = 13 or smoke.smoke_level.level = 14;
+	invariant u_smoke_6 needs smoke.smoke_level.level = 15 or smoke.smoke_level.level = 16;
+	invariant u_smoke_7 needs smoke.smoke_level.level = 17 or smoke.smoke_level.level = 18;
+	invariant u_smoke_8 needs smoke.smoke_level.level > 18;
+end
+
+light : Hybrid_light();
+
+group light_reqs:
+	invariant u_light_0 needs light.light_level.level < 7;
+	invariant u_light_1 needs light.light_level.level = 7;
+	invariant u_light_2 needs light.light_level.level = 8 or light.light_level.level = 9;
+	invariant u_light_3 needs light.light_level.level = 10 or light.light_level.level = 11;
+	invariant u_light_4 needs light.light_level.level = 12;
+	invariant u_light_5 needs light.light_level.level = 13 or light.light_level.level = 14;
+	invariant u_light_6 needs light.light_level.level = 15 or light.light_level.level = 16;
+	invariant u_light_7 needs light.light_level.level = 17 or light.light_level.level = 18;
+	invariant u_light_8 needs light.light_level.level > 18;
+end
+
+plant switch_timer:
+	const int t_tubes = 3;
+    const int t_safespace = 3;
+    cont t = 0;
+    location off:
+        initial; marked;
+        equation t' = 0;
+        edge c_switch_timer_audio_on do t:=0 goto tubes;
+    location tubes:
+        equation t' = 1;
+        edge c_switch_timer_audio_off goto off;
+        edge u_switch_timer_audio_timeout when t>t_tubes do t:=0 goto safespace;
+    location safespace:
+        equation t' = 1;
+        edge c_switch_timer_audio_off goto off;
+        edge u_switch_timer_audio_timeout when t>t_safespace do t:=0 goto tubes;
+end
+
+end

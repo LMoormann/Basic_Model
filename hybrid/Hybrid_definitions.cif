@@ -1,0 +1,47 @@
+group def hybrid_boombarrier(location move_up; location up; event sensor_up_on; event sensor_up_off; location move_down; location down; event sensor_down_on; event sensor_down_off):
+    // h: variable indicating the height of the boom barrier
+    // only added for simulation purposes of the sensors, sensors work automatically in practice
+    cont height = 300;
+    const int height_up = 300, height_down = 0;
+    equation height' =
+        if move_up and not up : 100
+        elif move_down and not down : -100
+        else 0 end;
+
+    plant position_boombarrier_observer:
+        location:
+        marked; initial;
+        edge sensor_up_off      when height < height_up;
+        edge sensor_up_on       when height > height_up;
+        edge sensor_down_off    when height > height_down;
+        edge sensor_down_on     when height < height_down;
+    end
+end
+
+plant def physical_sensor(uncontrollable event_off, event_on):
+    uncontrollable u_on, u_off;
+    location off:
+        initial; marked;
+        edge u_on goto on;
+        edge event_off;
+    location on:
+        edge u_off goto off;
+        edge event_on;
+end
+
+group def normal_boombarrierVisu(hybrid_boombarrier boombarrier; alg string bb1; alg string bb2; alg string bb3; alg string bb4; alg string bb5; alg string bb6):
+    svgout id bb1 attr "visibility" value if boombarrier.height > boombarrier.height_up-1: "visible" else "hidden" end;
+    svgout id bb2 attr "visibility" value if boombarrier.height < boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb3 attr "visibility" value if boombarrier.height < 0.75*boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb4 attr "visibility" value if boombarrier.height < 0.5*boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb5 attr "visibility" value if boombarrier.height < 0.25*boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb6 attr "visibility" value if boombarrier.height < boombarrier.height_down: "visible" else "hidden" end;
+end
+
+group def emergency_boombarrierVisu(hybrid_boombarrier boombarrier; alg string bb1; alg string bb2; alg string bb3; alg string bb4; alg string bb5):
+    svgout id bb1 attr "visibility" value if boombarrier.height > boombarrier.height_up-1: "visible" else "hidden" end;
+    svgout id bb2 attr "visibility" value if boombarrier.height < boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb3 attr "visibility" value if boombarrier.height < 0.67*boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb4 attr "visibility" value if boombarrier.height < 0.33*boombarrier.height_up: "visible" else "hidden" end;
+    svgout id bb5 attr "visibility" value if boombarrier.height < boombarrier.height_down: "visible" else "hidden" end;
+end

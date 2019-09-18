@@ -1,0 +1,33 @@
+import "Sensor.cif", "Timer.cif";
+
+group def Traffic_light():
+
+plant mode:
+	controllable c_off, c_yellow, c_flashing, c_red;
+	location off:
+		initial; marked;
+		edge c_flashing goto flashing;
+	location flashing:
+		edge c_off goto off;
+		edge c_yellow goto yellow;
+	location yellow:
+		edge c_red goto red;
+	location red:
+		edge c_flashing goto flashing;
+end
+
+release_signal : Sensor(true,true,false);
+timer_release_signal : Timer();
+
+plant relation:
+	location:
+		initial; marked;
+		edge release_signal.u_on when mode.red and timer_release_signal.finished;
+		edge release_signal.u_off when not mode.red;
+end
+
+requirement timer_release_signal.c_on needs mode.red;
+requirement timer_release_signal.c_reset needs not mode.red;
+end
+
+

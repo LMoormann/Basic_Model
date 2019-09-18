@@ -1,0 +1,230 @@
+import "Boom_barrier.cif", "Traffic_light.cif", "j32.cif", "Emergency_cabinet.cif", "Button.cif", "Lighting.cif", "Ventilation.cif", "Smoke_detection.cif", "Escape_door.cif", "Lightsensor.cif", "Channel.cif";
+
+group def Traffic_tube():
+
+boom_barrier_1 : Boom_barrier();
+boom_barrier_2 : Boom_barrier();
+
+traffic_light_1 : Traffic_light();
+traffic_light_2 : Traffic_light();
+traffic_light_3 : Traffic_light();
+
+j32 : J32();
+
+matrix_sign_traffic_light : Actuator(true,false);
+matrix_sign_free : Actuator(true,false);
+
+SOS : Sensor(true,true,false);
+emergency_cabinet_A : Emergency_cabinet_A();
+emergency_cabinet_C : Emergency_cabinet_C();
+
+smoke_detection : Smoke_detection();
+ventilation : Ventilation();
+ventilation_entrance : Ventilation();
+plant ventilation_direction:
+	controllable c_along, c_against;
+	location along:
+		initial; marked;
+		edge c_against goto against;
+	location against:
+		edge c_along goto along;
+end
+
+lightsensor : Lightsensor();
+lighting : Lighting();
+
+channel : Channel();
+recorder : Actuator(true,false);
+
+escape_door : Escape_door();
+
+intercom : Actuator(true,false);
+switch_timer_audio : Wissel_timer();
+
+plant mode:
+	controllable c_operational, c_emergency, c_recovery, c_support;
+	location operational:
+		initial; marked;
+		edge c_emergency goto emergency;
+		edge c_recovery goto recovery;
+		edge c_support goto support;
+	location emergency:
+		edge c_recovery goto recovery;
+		edge c_operational goto operational;
+		edge c_support goto support;
+	location recovery:
+		edge c_operational goto operational;
+		edge c_emergency goto emergency;
+		edge c_support goto support;
+	location support:
+		edge c_operational goto operational;
+		edge c_emergency goto emergency;
+		edge c_recovery goto recovery;
+end
+
+standby : Actuator(true,false);
+evacuation : Actuator(true,false);
+
+button_operational : Button(mode.recovery, mode.operational);
+button_evacuation : Button(mode.emergency and evacuation.off, evacuation.on);
+button_recovery : Button(mode.emergency, mode.recovery);
+
+requirement mode.c_operational needs mode.recovery;
+requirement mode.c_operational needs button_operational.observer.pressed;
+requirement mode.c_emergency needs mode.operational;
+requirement mode.c_emergency needs SOS.on;
+requirement mode.c_emergency needs smoke_detection.mode>3;
+requirement mode.c_emergency needs emergency_cabinet_A.sensor_open.on or emergency_cabinet_C.sensor_open.on;
+requirement mode.c_emergency needs emergency_cabinet_A.hand_extinguisher.on or emergency_cabinet_A.fire_hose.on or emergency_cabinet_A.emergency_phone.on or emergency_cabinet_C.hand_extinguisher.on or emergency_cabinet_C.emergency_phone.on;
+requirement mode.c_recovery needs mode.emergency or mode.support;
+requirement mode.c_support needs not mode.emergency;
+
+requirement standby.c_on needs mode.operational;
+requirement standby.c_on needs smoke_detection.mode>3 or emergency_cabinet_A.hand_extinguisher.on or emergency_cabinet_A.fire_hose.on or emergency_cabinet_C.hand_extinguisher.on;
+requirement standby.c_off needs not mode.operational;
+
+requirement evacuation.c_on needs button_evacuation.observer.pressed;
+requirement evacuation.c_off needs not mode.emergency;
+
+group def boom_barrier_requirements(controllable event c_down_on, c_down_off_emergency, c_up_on; location obstacle_detection_on):
+	requirement c_down_on needs traffic_light_1.release_signal.on;
+	requirement c_down_on needs traffic_light_2.release_signal.on;
+	requirement c_down_on needs traffic_light_3.release_signal.on;
+	requirement c_down_on needs not mode.operational;
+	requirement c_down_off_emergency needs obstacle_detection_on or traffic_light_1.release_signal.off or traffic_light_2.release_signal.off or traffic_light_3.release_signal.off;
+	requirement c_up_on needs mode.operational;
+end
+boom_barrier_1_requirements : boom_barrier_requirements(boom_barrier_1.actuator_down.c_on, boom_barrier_1.actuator_down.c_off_emergency, boom_barrier_1.actuator_up.c_on, boom_barrier_1.obstacle_detection.on);
+boom_barrier_2_requirements : boom_barrier_requirements(boom_barrier_2.actuator_down.c_on, boom_barrier_2.actuator_down.c_off_emergency, boom_barrier_2.actuator_up.c_on, boom_barrier_2.obstacle_detection.on);
+
+group def traffic_light_requirements(controllable event c_flashing, c_off, c_yellow; location red, off):
+	requirement red and boom_barrier_1.closed disables c_flashing;
+	requirement red and boom_barrier_2.closed disables c_flashing;
+	requirement j32.mode.off disables c_flashing;
+	requirement off and not j32.timer_release_signal.finished disables c_flashing;
+	requirement c_off needs mode.operational;
+	requirement c_flashing needs (red and mode.operational) or (off and not mode.operational);
+	requirement c_yellow needs not mode.operational;
+end
+traffic_light_1_requirements : traffic_light_requirements(traffic_light_1.mode.c_flashing, traffic_light_1.mode.c_off, traffic_light_1.mode.c_yellow, traffic_light_1.mode.red, traffic_light_1.mode.off);
+traffic_light_2_requirements : traffic_light_requirements(traffic_light_2.mode.c_flashing, traffic_light_2.mode.c_off, traffic_light_2.mode.c_yellow, traffic_light_2.mode.red, traffic_light_2.mode.off);
+traffic_light_3_requirements : traffic_light_requirements(traffic_light_3.mode.c_flashing, traffic_light_3.mode.c_off, traffic_light_3.mode.c_yellow, traffic_light_3.mode.red, traffic_light_3.mode.off);
+
+requirement j32.mode.c_on needs mode.emergency or mode.support;
+requirement j32.mode.c_off needs traffic_light_1.mode.off;
+requirement j32.mode.c_off needs traffic_light_2.mode.off;
+requirement j32.mode.c_off needs traffic_light_3.mode.off;
+requirement j32.mode.c_off needs mode.operational;
+
+requirement matrix_sign_traffic_light.c_on needs not mode.operational;
+requirement matrix_sign_traffic_light.c_on needs not traffic_light_1.mode.red;
+requirement matrix_sign_traffic_light.c_on needs not traffic_light_2.mode.red;
+requirement matrix_sign_traffic_light.c_on needs not traffic_light_3.mode.red;
+requirement matrix_sign_traffic_light.c_off needs mode.operational or traffic_light_1.mode.red or traffic_light_2.mode.red or traffic_light_3.mode.red;
+
+requirement matrix_sign_free.c_on needs not mode.operational;
+requirement matrix_sign_free.c_off needs mode.operational;
+
+group def ventilation_entrance_requirements(controllable event c_0, c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8):
+	requirement c_0 needs mode.operational or mode.support;
+	requirement c_0 needs smoke_detection.mode = 0 or mode.support;
+	requirement c_1 needs mode.operational;
+	requirement c_1 needs smoke_detection.mode = 1;
+	requirement c_2 needs mode.operational;
+	requirement c_2 needs smoke_detection.mode = 2;
+	requirement c_3 needs mode.operational;
+	requirement c_3 needs smoke_detection.mode = 3;
+	requirement c_4 needs (mode.operational and smoke_detection.mode = 4) or (mode.recovery and smoke_detection.mode < 5);
+	requirement c_5 needs mode.operational or mode.recovery;
+	requirement c_5 needs smoke_detection.mode = 5;
+	requirement c_6 needs mode.operational or mode.recovery;
+	requirement c_6 needs smoke_detection.mode = 6;
+	requirement c_7 needs mode.operational or mode.recovery;
+	requirement c_7 needs smoke_detection.mode = 7;
+	requirement c_8 needs ((mode.operational or mode.recovery) and smoke_detection.mode = 8) or mode.emergency;
+end
+ventilation_1_requirements : ventilation_entrance_requirements(ventilation_entrance.c_0, ventilation_entrance.c_1, ventilation_entrance.c_2, ventilation_entrance.c_3, ventilation_entrance.c_4, ventilation_entrance.c_5, ventilation_entrance.c_6, ventilation_entrance.c_7, ventilation_entrance.c_8);
+
+group def ventilation_requirements(controllable event c_0, c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8):
+	requirement c_0 needs mode.operational;
+	requirement c_0 needs smoke_detection.mode = 0;
+	requirement c_1 needs mode.operational;
+	requirement c_1 needs smoke_detection.mode = 1;
+	requirement c_2 needs mode.operational;
+	requirement c_2 needs smoke_detection.mode = 2;
+	requirement c_3 needs mode.operational;
+	requirement c_3 needs smoke_detection.mode = 3;
+	requirement c_4 needs (mode.operational and smoke_detection.mode = 4) or (mode.recovery and smoke_detection.mode < 5);
+	requirement c_5 needs mode.operational or mode.recovery;
+	requirement c_5 needs smoke_detection.mode = 5;
+	requirement c_6 needs ((mode.operational or mode.recovery) and smoke_detection.mode = 6) or (mode.support and smoke_detection.mode < 7);
+	requirement c_7 needs mode.operational or mode.recovery or mode.support;
+	requirement c_7 needs smoke_detection.mode = 7;
+	requirement c_8 needs smoke_detection.mode = 8 or mode.emergency;
+end
+ventilation_2_requirements : ventilation_requirements(ventilation.c_0, ventilation.c_1, ventilation.c_2, ventilation.c_3, ventilation.c_4, ventilation.c_5, ventilation.c_6, ventilation.c_7, ventilation.c_8);
+
+requirement ventilation_direction.c_against needs mode.support;
+requirement ventilation_direction.c_along needs not mode.support;
+
+group def lighting_requirements(controllable event c_0, c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8):
+	requirement c_0 needs mode.operational;
+	requirement c_0 needs lightsensor.mode = 0;
+	requirement c_1 needs mode.operational;
+	requirement c_1 needs lightsensor.mode = 1;
+	requirement c_2 needs mode.operational;
+	requirement c_2 needs lightsensor.mode = 2;
+	requirement c_3 needs mode.operational;
+	requirement c_3 needs lightsensor.mode = 3;
+	requirement c_4 needs (mode.operational and lightsensor.mode = 4) or (mode.recovery and lightsensor.mode < 5);
+	requirement c_5 needs mode.operational or mode.recovery;
+	requirement c_5 needs lightsensor.mode = 5;
+	requirement c_6 needs ((mode.operational or mode.recovery) and lightsensor.mode = 6) or (mode.support and lightsensor.mode < 7);
+	requirement c_7 needs mode.operational or mode.recovery or mode.support;
+	requirement c_7 needs lightsensor.mode = 7;
+	requirement c_8 needs lightsensor.mode = 8 or mode.emergency;
+end
+lighting_1_requirements : lighting_requirements(lighting.c_0, lighting.c_1, lighting.c_2, lighting.c_3, lighting.c_4, lighting.c_5, lighting.c_6, lighting.c_7, lighting.c_8);
+
+group def escape_door_requirements(controllable event c_contour_lighting_on, c_contour_lighting_off, c_sound_beacon_on, c_sound_beacon_off):
+	requirement c_contour_lighting_on needs evacuation.on;
+	requirement c_contour_lighting_off needs evacuation.off;
+	requirement c_sound_beacon_on needs switch_timer_audio.on_2;
+	requirement c_sound_beacon_on needs intercom.off;
+	requirement c_sound_beacon_off needs not switch_timer_audio.on_2;
+end
+escape_door_1_requirements : escape_door_requirements(escape_door.contour_lighting.c_on, escape_door.contour_lighting.c_off, escape_door.sound_beacon.c_on, escape_door.sound_beacon.c_off);
+
+alg bool conditie_camera_1 = not mode.operational and (not traffic_light_1.mode.red or not traffic_light_2.mode.red or not traffic_light_3.mode.red);
+alg bool conditie_camera_2 = boom_barrier_1.actuator_down.on or boom_barrier_2.actuator_down.on;
+alg bool conditie_camera_3 = mode.operational and (emergency_cabinet_A.sensor_open.on or emergency_cabinet_C.sensor_open.on);
+alg bool conditie_camera_4 = SOS.on;
+alg bool conditie_camera_5 = smoke_detection.mode>4;
+alg bool conditie_camera_6 = escape_door.sensor_open.on;
+
+requirement channel.c_1_on needs 	 conditie_camera_1;
+requirement channel.c_2_on needs 	 conditie_camera_2;
+requirement channel.c_3_on needs 	 conditie_camera_3;
+requirement channel.c_4_on needs 	 conditie_camera_4;
+requirement channel.c_5_on needs 	 conditie_camera_5;
+requirement channel.c_6_on needs 	 conditie_camera_6;
+requirement channel.c_1_off needs not conditie_camera_1;
+requirement channel.c_2_off needs not conditie_camera_2;
+requirement channel.c_3_off needs not conditie_camera_3;
+requirement channel.c_4_off needs not conditie_camera_4;
+requirement channel.c_5_off needs not conditie_camera_5;
+requirement channel.c_6_off needs not conditie_camera_6;
+
+requirement recorder.c_on needs mode.emergency or mode.support;
+requirement recorder.c_off needs mode.operational or mode.recovery;
+
+group def intercom_requirements(controllable event c_on, c_off):
+	requirement c_on needs switch_timer_audio.on_1;
+	requirement c_on needs escape_door.sound_beacon.off;
+	requirement c_off needs not switch_timer_audio.on_1;
+end
+intercom_1_requirements : intercom_requirements(intercom.c_on, intercom.c_off);
+
+requirement switch_timer_audio.c_on needs evacuation.on;
+requirement switch_timer_audio.c_off needs evacuation.off;
+end

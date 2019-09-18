@@ -1,0 +1,30 @@
+import "Actuator.cif", "Sensor.cif";
+
+group def Boom_barrier():
+actuator_up : Actuator(true,false);
+actuator_down : Actuator_emergencystop(true,false);
+sensor_open : Sensor(false,false,true);
+sensor_closed : Sensor(true,true,false);
+
+plant physical_relation:
+	location:
+		initial; marked;
+		edge sensor_open.u_on when actuator_up.on and sensor_closed.off;
+		edge sensor_closed.u_off when actuator_up.on;
+		edge sensor_open.u_off when actuator_down.on;
+		edge sensor_closed.u_on when actuator_down.on and sensor_open.off;
+end
+
+obstacle_detection : Sensor(true,true,false);
+
+alg bool open = sensor_open.on and actuator_up.off and actuator_down.off;
+alg bool closed = sensor_closed.on and actuator_up.off and actuator_down.off;
+
+requirement actuator_up.c_on needs actuator_down.off;
+requirement actuator_up.c_on needs not open;
+requirement actuator_up.c_off needs sensor_open.on;
+requirement actuator_down.c_on needs actuator_up.off;
+requirement actuator_down.c_on needs not closed;
+requirement actuator_down.c_off needs sensor_closed.on;
+requirement actuator_down.c_on needs obstacle_detection.off;
+end

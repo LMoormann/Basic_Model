@@ -1,0 +1,3 @@
+The output file 5_Supervisor.cif is synthesized using multilevel synthesis. The clustering parameters used in this synthesis algorithm are:
+alpha = 5, beta = 2, mu = 5
+

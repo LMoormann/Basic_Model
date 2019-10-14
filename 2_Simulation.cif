@@ -1,4 +1,4 @@
-import "1_Plant_Requirements.cif", "hybrid/Hybrid_traffic_tube.cif", "hybrid/Hybrid_pump_cellar.cif", "hybrid/Hybrid_fire_extinguishing_system.cif", "3_Visualisation.cif";
+import "1_Plant_Requirements.cif", "hybrid/Hybrid_traffic_tube.cif", "hybrid/Hybrid_pump_cellar.cif", "hybrid/Hybrid_fire_extinguishing_system.cif", "3_Visualization.cif";
 
 hybrid_tube_1 : Hybrid_traffic_tube(tube_1.boom_barrier_1.actuator_up.on, tube_1.boom_barrier_1.actuator_down.on, tube_1.boom_barrier_2.actuator_up.on, tube_1.boom_barrier_2.actuator_down.on,
 									tube_1.boom_barrier_1.open, tube_1.boom_barrier_1.closed, tube_1.boom_barrier_2.open, tube_1.boom_barrier_2.closed,

@@ -5,7 +5,7 @@ string mrg_path = "generated_files/6_Supervisor_Hybrid.cif";    //Location of su
 
 // Input files
 string sup_path = "generated_files/5_Supervisor.cif";           //Location of supervisor
-string sim_path = "2_Simulation.cif";                  //Location of simulation/hybrid model
+string sim_path = "2_Simulation.cif";                  			//Location of simulation/hybrid model
 
 // Merge supervisor with hybrid plant simulation model.
 outln("File \"%s\": generating...", mrg_path);
